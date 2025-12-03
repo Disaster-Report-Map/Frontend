@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	html {
+		font-family: 'Inter', system-ui, sans-serif;
+	}
+	
+	body {
+		@apply bg-gray-50 text-gray-900;
+	}
+	
+	/* OpenLayers map fixes - ultra-optimized for maximum performance */
+	.ol-viewport {
+		height: 100%;
+		width: 100%;
+		position: relative;
+		/* Maximum hardware acceleration */
+		transform: translateZ(0);
+		will-change: transform;
+		/* GPU acceleration */
+		backface-visibility: hidden;
+		perspective: 1000px;
+	}
+	
+	.ol-map {
+		height: 100%;
+		width: 100%;
+		min-height: 400px;
+		/* Optimize rendering performance */
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: crisp-edges;
+		/* Force GPU acceleration */
+		transform: translateZ(0);
+	}
+	
+	/* Optimize tile rendering for maximum speed */
+	.ol-layer {
+		will-change: transform;
+		transform: translateZ(0);
+		backface-visibility: hidden;
+	}
+	
+	.ol-tile {
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: crisp-edges;
+		/* Faster tile rendering */
+		transform: translateZ(0);
+		/* Optimize image loading */
+		image-rendering: auto;
+	}
+	
+	/* Optimize canvas rendering */
+	.ol-layer canvas {
+		image-rendering: auto;
+		transform: translateZ(0);
+	}
+	
+	/* OpenLayers popup styling */
+	.ol-popup {
+		position: absolute;
+		background-color: white;
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+		padding: 12px;
+		border-radius: 8px;
+		border: 1px solid #ccc;
+		bottom: 12px;
+		left: -50px;
+		min-width: 250px;
+		max-width: 300px;
+		pointer-events: auto;
+	}
+	
+	.ol-popup:after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		width: 0;
+		height: 0;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+		border-top: 10px solid white;
+		margin-left: -10px;
+	}
+	
+	.ol-popup-closer {
+		text-decoration: none;
+		position: absolute;
+		top: 2px;
+		right: 8px;
+		font-size: 18px;
+		color: #666;
+		cursor: pointer;
+	}
+	
+	.ol-popup-closer:hover {
+		color: #000;
+	}
+	
+	/* Ensure map doesn't interfere with modals */
+	.ol-control {
+		z-index: 3;
+	}
+	
+	/* Mobile responsive fixes */
+	@media (max-width: 768px) {
+		.ol-popup {
+			min-width: 200px;
+			max-width: 280px;
+		}
+	}
+}
+
+@layer components {
+	.btn-primary {
+		@apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+	}
+	
+	.btn-secondary {
+		@apply bg-gray-200 hover:bg-gray-300 text-gray-900 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+	}
+	
+	.btn-danger {
+		@apply bg-danger-600 hover:bg-danger-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-danger-500 focus:ring-offset-2;
+	}
+	
+	.card {
+		@apply bg-white rounded-lg shadow-sm border border-gray-200 p-4;
+	}
+	
+	.input {
+		@apply block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm;
+	}
+}
