@@ -23,11 +23,8 @@ export const useReports = () => {
 		retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
 	})
 
-	// Log data changes
-	if (query.data) {
-		console.log('Reports fetched:', query.data?.reports?.length, 'reports')
-	}
-	if (query.error) {
+	// Only log errors in development
+	if (query.error && import.meta.env.DEV) {
 		console.error('Failed to fetch reports:', query.error)
 	}
 

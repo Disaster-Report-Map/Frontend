@@ -29,6 +29,8 @@ export const useGeolocation = (options: GeolocationOptions = {}) => {
 	})
 
 	const isRequestingRef = useRef(false)
+	const hasRequestedRef = useRef(false)
+	const retryAttemptedRef = useRef(false)
 	const mergedOptions = { ...defaultOptions, ...options }
 
 	const checkPermission = useCallback(async () => {
@@ -57,31 +59,28 @@ export const useGeolocation = (options: GeolocationOptions = {}) => {
 
 		// Prevent multiple simultaneous calls using ref
 		if (isRequestingRef.current) {
-			console.log('getCurrentPosition already in progress, skipping...')
 			return
 		}
 
 		isRequestingRef.current = true
 		setState(prev => ({ ...prev, loading: true, error: null }))
 
-		console.log('Calling navigator.geolocation.getCurrentPosition...')
-
 		// Add a manual timeout fallback in case browser timeout doesn't work
 		const timeoutId = setTimeout(() => {
-			console.warn('Manual timeout: getCurrentPosition took too long, clearing loading state')
-			isRequestingRef.current = false
-			setState(prev => ({
-				...prev,
-				loading: false,
-				error: 'Location request timed out (manual timeout)'
-			}))
+			if (isRequestingRef.current) {
+				isRequestingRef.current = false
+				setState(prev => ({
+					...prev,
+					loading: false,
+					error: 'Location request timed out'
+				}))
+			}
 		}, 15000) // 15 seconds manual timeout
 
 		navigator.geolocation.getCurrentPosition(
 			(position) => {
 				clearTimeout(timeoutId)
 				isRequestingRef.current = false
-				console.log('getCurrentPosition success:', position.coords)
 				const location: UserLocation = {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude,
@@ -100,7 +99,6 @@ export const useGeolocation = (options: GeolocationOptions = {}) => {
 			(error) => {
 				clearTimeout(timeoutId)
 				isRequestingRef.current = false
-				console.log('getCurrentPosition error:', error.code, error.message)
 				let errorMessage = 'Failed to get location'
 				
 				switch (error.code) {
@@ -109,8 +107,10 @@ export const useGeolocation = (options: GeolocationOptions = {}) => {
 						setState(prev => ({ ...prev, permission: 'denied' }))
 						break
 					case error.POSITION_UNAVAILABLE:
-						errorMessage = 'Location information is unavailable'
-						// Don't set permission to denied for this error
+						errorMessage = 'Location information is unavailable. Please check your device location settings.'
+						// Don't retry for this error - it usually means GPS is off or unavailable
+						hasRequestedRef.current = true // Mark as attempted to prevent retries
+						retryAttemptedRef.current = true // Prevent further retries
 						break
 					case error.TIMEOUT:
 						errorMessage = 'Location request timed out'
@@ -213,13 +213,11 @@ export const useGeolocation = (options: GeolocationOptions = {}) => {
 					status.onchange = () => {
 						const newState = status.state as 'granted' | 'denied' | 'prompt'
 						setState(prev => ({ ...prev, permission: newState }))
-						// If permission is granted, clear any errors and retry
+						// Clear errors when permission is granted - let useEffect handle retry
 						if (newState === 'granted') {
 							setState(prev => ({ ...prev, error: null }))
-							// Small delay to ensure permission is fully applied
-							setTimeout(() => {
-								getCurrentPosition()
-							}, 100)
+							// Reset retry flag to allow one retry attempt
+							retryAttemptedRef.current = false
 						}
 					}
 				})
@@ -236,25 +234,30 @@ export const useGeolocation = (options: GeolocationOptions = {}) => {
 	}, [checkPermission, getCurrentPosition])
 
 	// Watch for permission state changes and retry when granted
-	// Use a ref to track if we've already attempted to get location for this permission state
-	const retryAttemptedRef = useRef(false)
 	
 	useEffect(() => {
-		if (state.permission === 'granted' && !state.location && !state.loading) {
-			// Only retry once per permission grant cycle
-			if (!retryAttemptedRef.current) {
-				retryAttemptedRef.current = true
-				// Clear any previous errors and retry
-				setState(prev => ({ ...prev, error: null }))
-				// Small delay to ensure state is updated
-				const timer = setTimeout(() => {
-					console.log('Permission granted in hook, attempting to get location...')
-					getCurrentPosition()
-				}, 500)
-				return () => clearTimeout(timer)
-			}
-		} else if (state.location) {
-			// Reset the ref when we successfully get a location
+		// Only request location once on mount if permission is already granted
+		if (state.permission === 'granted' && !state.location && !state.loading && !hasRequestedRef.current) {
+			hasRequestedRef.current = true
+			setState(prev => ({ ...prev, error: null }))
+			const timer = setTimeout(() => {
+				getCurrentPosition()
+			}, 300)
+			return () => clearTimeout(timer)
+		}
+		
+		// Retry once when permission changes from prompt/denied to granted
+		if (state.permission === 'granted' && !state.location && !state.loading && !retryAttemptedRef.current && hasRequestedRef.current) {
+			retryAttemptedRef.current = true
+			setState(prev => ({ ...prev, error: null }))
+			const timer = setTimeout(() => {
+				getCurrentPosition()
+			}, 500)
+			return () => clearTimeout(timer)
+		}
+		
+		// Reset retry flag when we get a location
+		if (state.location) {
 			retryAttemptedRef.current = false
 		}
 	}, [state.permission, state.location, state.loading, getCurrentPosition])

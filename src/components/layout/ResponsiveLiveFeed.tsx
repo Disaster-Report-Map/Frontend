@@ -25,14 +25,6 @@ export const ResponsiveLiveFeed = ({ userLocation, onReportClick, className }: R
 	const { data: reportsData, isLoading, error, refetch, isFetching } = useReports()
 
 	const reports = (reportsData as any)?.reports || []
-	
-	// Debug logging
-	console.log('ResponsiveLiveFeed state:', {
-		userLocation,
-		radiusFilter,
-		selectedTypes,
-		reportsCount: reports.length
-	})
 
 	// Calculate distance between two points in kilometers
 	const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {

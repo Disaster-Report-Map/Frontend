@@ -26,33 +26,14 @@ const MapPage = () => {
 
 	const reports = reportsData?.reports || []
 	
-	// Debug user location
-	console.log('User location:', userLocation)
-	console.log('Location loading:', locationLoading)
-	console.log('Geo error:', geoError)
-	console.log('Permission:', permission)
-
-	// Automatically request user location on page load
+	// Request location only once on mount - let the hook handle retries
 	useEffect(() => {
-		if (!userLocation && !locationLoading && !geoError) {
-			console.log('Requesting user location...')
+		// Only request if we don't have location and permission is not denied
+		if (!userLocation && permission !== 'denied' && !locationLoading) {
 			getCurrentPosition()
 		}
-	}, [userLocation, locationLoading, geoError, getCurrentPosition])
-
-	// Retry getting location when permission becomes granted (only if hook didn't catch it)
-	// This is a fallback - the hook should handle this, but we add this as backup
-	useEffect(() => {
-		// Only retry if permission is granted, no location, not loading, and no error
-		// Add a longer delay to avoid conflicts with the hook's retry
-		if (permission === 'granted' && !userLocation && !locationLoading && !geoError) {
-			const timer = setTimeout(() => {
-				console.log('Permission granted in MapPage (fallback), retrying location...')
-				getCurrentPosition()
-			}, 1000) // Longer delay to let hook handle it first
-			return () => clearTimeout(timer)
-		}
-	}, [permission, userLocation, locationLoading, geoError, getCurrentPosition])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []) // Only run once on mount
 
 	// Set map to user location on page load with smooth transition
 	useEffect(() => {
