@@ -1,4 +1,5 @@
-import { useState, FormEvent } from 'react'
+import { useState } from 'react'
+import type { FormEvent } from 'react'
 import { useAuth } from '../../hooks/auth/useAuth'
 import { Button } from '../../components/ui/Button'
 import { GoogleSignInButton } from '../../components/auth/GoogleSignInButton'

@@ -1,10 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../stores/store'
+import type { RootState, AppDispatch } from '../../stores/store'
 import { login, register, googleSignIn, logout, getCurrentUser, clearError } from '../../stores/slices/authSlice'
 import type { LoginCredentials, RegisterCredentials } from '../../types/auth'
 
 export const useAuth = () => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch<AppDispatch>()
 	const auth = useSelector((state: RootState) => state.auth)
 
 	return {
