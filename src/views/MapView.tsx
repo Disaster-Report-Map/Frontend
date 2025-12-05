@@ -13,7 +13,7 @@ import { useGeolocation } from '../../hooks/geolocation/useGeolocation'
 import { useWelcomeModal } from '../../hooks/ui/useWelcomeModal'
 import type { DisasterReport, Coordinates } from '../../types'
 
-const MapPage = () => {
+export const MapView = () => {
 	const [showReportForm, setShowReportForm] = useState(false)
 	const [selectedReport, setSelectedReport] = useState<DisasterReport | null>(null)
 	const [selectedLocation, setSelectedLocation] = useState<Coordinates | null>(null)
@@ -173,6 +173,3 @@ const MapPage = () => {
 		</div>
 	)
 }
-
-export { MapPage }
-
