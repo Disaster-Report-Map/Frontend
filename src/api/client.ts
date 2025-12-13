@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { config } from '../config/env'
 import { store } from '../stores/store'
+import { clearCredentials } from '../stores/slices/authSlice'
 
 const API_BASE_URL = config.apiBaseUrl
 
@@ -37,7 +38,7 @@ apiClient.interceptors.response.use(
 		// Handle common errors
 		if (error.response?.status === 401) {
 			// Handle unauthorized - clear auth state
-			store.dispatch({ type: 'auth/clearCredentials' })
+			store.dispatch(clearCredentials())
 		}
 		
 		return Promise.reject({

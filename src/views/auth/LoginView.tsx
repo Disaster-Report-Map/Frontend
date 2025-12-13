@@ -4,24 +4,34 @@ import { useAuth } from '../../hooks/auth/useAuth'
 import { Button } from '../../components/ui/Button'
 import { GoogleSignInButton } from '../../components/auth/GoogleSignInButton'
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 export function LoginView() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const { login, isLoading, error, clearError } = useAuth()
 	const navigate = useNavigate()
+	const location = useLocation()
+
+	// Get the intended destination from location state, or default to home
+	const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/'
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault()
 		clearError()
 
 		try {
-			await login({ email, password })
-			toast.success('Login successful!')
-			navigate('/')
-		} catch (err) {
-			toast.error(error || 'Login failed')
+			const result = await login({ email, password })
+			if (result.type === 'auth/login/fulfilled') {
+				toast.success('Login successful!')
+				navigate(from, { replace: true })
+			} else {
+				const errorMessage = (result.payload as string) || error || 'Login failed'
+				toast.error(errorMessage)
+			}
+		} catch (err: any) {
+			const errorMessage = err?.message || error || 'Login failed. Please try again.'
+			toast.error(errorMessage)
 		}
 	}
 

@@ -18,6 +18,38 @@ if (token) {
 	initialState.isAuthenticated = true
 }
 
+/**
+ * Helper function to extract error message from Django REST Framework error response
+ */
+const extractErrorMessage = (error: any): string => {
+	if (!error?.response?.data) {
+		return error?.message || 'An unexpected error occurred'
+	}
+
+	const data = error.response.data
+
+	// Check for direct error message
+	if (typeof data.error === 'string') {
+		return data.error
+	}
+
+	// Check for non_field_errors (common in DRF)
+	if (Array.isArray(data.non_field_errors) && data.non_field_errors.length > 0) {
+		return data.non_field_errors[0]
+	}
+
+	// Check for field-specific errors
+	if (typeof data === 'object') {
+		const firstError = Object.values(data).find((val) => Array.isArray(val) && val.length > 0)
+		if (Array.isArray(firstError) && firstError.length > 0) {
+			return String(firstError[0])
+		}
+	}
+
+	// Fallback to message or default
+	return data.message || data.detail || 'An error occurred'
+}
+
 // Async thunks
 export const login = createAsyncThunk<AuthResponse, LoginCredentials>(
 	'auth/login',
@@ -26,7 +58,7 @@ export const login = createAsyncThunk<AuthResponse, LoginCredentials>(
 			const response = await authApi.login(credentials)
 			return response.data
 		} catch (error: any) {
-			return rejectWithValue(error.response?.data?.error || 'Login failed')
+			return rejectWithValue(extractErrorMessage(error))
 		}
 	}
 )
@@ -38,7 +70,7 @@ export const register = createAsyncThunk<AuthResponse, RegisterCredentials>(
 			const response = await authApi.register(credentials)
 			return response.data
 		} catch (error: any) {
-			return rejectWithValue(error.response?.data?.error || 'Registration failed')
+			return rejectWithValue(extractErrorMessage(error))
 		}
 	}
 )
@@ -50,7 +82,7 @@ export const googleSignIn = createAsyncThunk<GoogleSignInResponse, string>(
 			const response = await authApi.googleSignIn(token)
 			return response.data
 		} catch (error: any) {
-			return rejectWithValue(error.response?.data?.error || 'Google sign-in failed')
+			return rejectWithValue(extractErrorMessage(error))
 		}
 	}
 )
@@ -66,7 +98,7 @@ export const getCurrentUser = createAsyncThunk<User, void>(
 			const response = await authApi.getCurrentUser()
 			return response.data
 		} catch (error: any) {
-			return rejectWithValue(error.response?.data?.error || 'Failed to get user')
+			return rejectWithValue(extractErrorMessage(error))
 		}
 	}
 )

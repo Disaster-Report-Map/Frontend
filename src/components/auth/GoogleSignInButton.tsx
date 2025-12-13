@@ -29,11 +29,17 @@ export function GoogleSignInButton() {
 				
 				// Temporary workaround: Use access token
 				// In production, implement Google Identity Services for ID token
-				await googleSignIn(tokenResponse.access_token)
-				toast.success('Signed in with Google!')
-				navigate('/')
+				const result = await googleSignIn(tokenResponse.access_token)
+				if (result.type === 'auth/googleSignIn/fulfilled') {
+					toast.success('Signed in with Google!')
+					navigate('/', { replace: true })
+				} else {
+					const errorMessage = (result.payload as string) || 'Google sign-in failed'
+					toast.error(errorMessage)
+				}
 			} catch (error: any) {
-				toast.error(error.message || 'Google sign-in failed')
+				const errorMessage = error?.message || error?.response?.data?.error || 'Google sign-in failed'
+				toast.error(errorMessage)
 			}
 		},
 		onError: () => {

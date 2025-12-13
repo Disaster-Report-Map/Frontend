@@ -24,18 +24,29 @@ export function RegisterView() {
 			return
 		}
 
+		if (password.length < 8) {
+			toast.error('Password must be at least 8 characters long')
+			return
+		}
+
 		try {
-			await register({
+			const result = await register({
 				email,
 				password,
 				password_confirm: passwordConfirm,
 				first_name: firstName || undefined,
 				last_name: lastName || undefined,
 			})
-			toast.success('Registration successful!')
-			navigate('/')
-		} catch (err) {
-			toast.error(error || 'Registration failed')
+			if (result.type === 'auth/register/fulfilled') {
+				toast.success('Registration successful!')
+				navigate('/', { replace: true })
+			} else {
+				const errorMessage = (result.payload as string) || error || 'Registration failed'
+				toast.error(errorMessage)
+			}
+		} catch (err: any) {
+			const errorMessage = err?.message || error || 'Registration failed. Please try again.'
+			toast.error(errorMessage)
 		}
 	}
 
