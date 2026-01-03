@@ -132,7 +132,7 @@ export const DisasterMap = ({
 			// @2x for retina displays, but we'll use regular for faster loading
 			url: 'https://{a-d}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
 			attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-			maxZoom: 18, // Lower max zoom for faster loading (18 is usually sufficient)
+			maxZoom: 19, // Increased max zoom to support maximum zoom level
 			crossOrigin: 'anonymous',
 			// Maximum cache size for fastest tile retrieval
 			cacheSize: 2048, // Doubled cache size
@@ -313,7 +313,7 @@ export const DisasterMap = ({
 		if (shouldAnimate) {
 			const view = mapInstanceRef.current.getView()
 			// Use the zoom prop if provided, otherwise use appropriate zoom based on context
-			const targetZoom = zoom || (selectedReport ? 17 : 15)
+			const targetZoom = zoom || (selectedReport ? 19 : 15)
 
 			view.animate({
 				center: fromLonLat([targetCenter.lng, targetCenter.lat]),
@@ -322,6 +322,13 @@ export const DisasterMap = ({
 			})
 
 			previousCenterRef.current = targetCenter
+		} else if (zoom !== undefined) {
+			// If only zoom changed, animate zoom without changing center
+			const view = mapInstanceRef.current.getView()
+			view.animate({
+				zoom: zoom,
+				duration: 1000,
+			})
 		}
 	}, [center, selectedReport, userLocation, zoom])
 

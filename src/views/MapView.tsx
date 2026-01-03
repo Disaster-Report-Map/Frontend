@@ -65,11 +65,7 @@ export const MapView = () => {
 		setSelectedReport(report)
 		// Center map on the selected report with smooth transition
 		setMapCenter(report.location)
-		setMapZoom(17) // Zoom in closer when viewing a specific report (17 is street-level)
-		
-		// Open Google Maps with the report coordinates
-		const googleMapsUrl = `https://www.google.com/maps?q=${report.location.lat},${report.location.lng}`
-		window.open(googleMapsUrl, '_blank', 'noopener,noreferrer')
+		setMapZoom(19) // Maximum zoom level (19 is building-level detail)
 	}
 
 	const handleReportSuccess = () => {
