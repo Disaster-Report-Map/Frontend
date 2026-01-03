@@ -41,7 +41,7 @@ export const MapView = () => {
 			// Add a small delay to ensure the map is fully loaded
 			const timer = setTimeout(() => {
 				setMapCenter(userLocation)
-				setMapZoom(15) // Zoom in more when showing user location
+				setMapZoom(15) // Zoom in more when showing user location (15 is neighborhood level)
 			}, 500)
 			
 			return () => clearTimeout(timer)
@@ -52,7 +52,7 @@ export const MapView = () => {
 	useEffect(() => {
 		if (userLocation && !selectedReport) {
 			setMapCenter(userLocation)
-			setMapZoom(15)
+			setMapZoom(15) // Neighborhood level zoom
 		}
 	}, [selectedReport, userLocation])
 
@@ -65,7 +65,11 @@ export const MapView = () => {
 		setSelectedReport(report)
 		// Center map on the selected report with smooth transition
 		setMapCenter(report.location)
-		setMapZoom(15) // Zoom in when viewing a specific report
+		setMapZoom(17) // Zoom in closer when viewing a specific report (17 is street-level)
+		
+		// Open Google Maps with the report coordinates
+		const googleMapsUrl = `https://www.google.com/maps?q=${report.location.lat},${report.location.lng}`
+		window.open(googleMapsUrl, '_blank', 'noopener,noreferrer')
 	}
 
 	const handleReportSuccess = () => {

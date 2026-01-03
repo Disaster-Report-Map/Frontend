@@ -101,6 +101,14 @@ export const DisasterCard = ({ report, userLocation, onClick, className }: Disas
 		window.open(googleMapsUrl, '_blank', 'noopener,noreferrer')
 	}
 
+	const handleOpenInGoogleMaps = (e: React.MouseEvent) => {
+		e.stopPropagation() // Prevent card click
+		
+		// Open Google Maps to the report coordinates
+		const googleMapsUrl = `https://www.google.com/maps?q=${report.location.lat},${report.location.lng}`
+		window.open(googleMapsUrl, '_blank', 'noopener,noreferrer')
+	}
+
 	const statusOptions = [
 		{ value: 'active', label: 'Active', color: 'bg-yellow-100 text-yellow-800' },
 		{ value: 'investigating', label: 'Investigating', color: 'bg-blue-100 text-blue-800' },
@@ -204,16 +212,15 @@ export const DisasterCard = ({ report, userLocation, onClick, className }: Disas
 						</div>
 					)}
 					
-					{userLocation && (
-						<button
-							onClick={handleGetDirections}
-							className="flex items-center gap-1 px-2 py-1 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
-							title="Get directions in Google Maps"
-						>
-							<Navigation className="h-3 w-3" />
-							<span className="text-xs font-medium">Directions</span>
-						</button>
-					)}
+					{/* Navigation icon - always visible to open Google Maps to coordinates */}
+					<button
+						onClick={handleOpenInGoogleMaps}
+						className="flex items-center gap-1 px-2 py-1 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+						title="Open location in Google Maps"
+					>
+						<Navigation className="h-3 w-3" />
+						<span className="text-xs font-medium">Navigate</span>
+					</button>
 				</div>
 			</div>
 		</div>

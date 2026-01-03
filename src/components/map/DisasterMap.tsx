@@ -304,14 +304,16 @@ export const DisasterMap = ({
 		const targetCenter = center || selectedReport?.location || userLocation
 		if (!targetCenter) return
 
-		// Only animate if center has changed
-		if (
+		// Only animate if center or zoom has changed
+		const shouldAnimate = 
 			!previousCenterRef.current ||
 			previousCenterRef.current.lat !== targetCenter.lat ||
 			previousCenterRef.current.lng !== targetCenter.lng
-		) {
+
+		if (shouldAnimate) {
 			const view = mapInstanceRef.current.getView()
-			const targetZoom = center || selectedReport ? 15 : zoom
+			// Use the zoom prop if provided, otherwise use appropriate zoom based on context
+			const targetZoom = zoom || (selectedReport ? 17 : 15)
 
 			view.animate({
 				center: fromLonLat([targetCenter.lng, targetCenter.lat]),
