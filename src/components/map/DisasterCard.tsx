@@ -86,21 +86,6 @@ export const DisasterCard = ({ report, userLocation, onClick, className }: Disas
 		}
 	}
 
-	const handleGetDirections = (e: React.MouseEvent) => {
-		e.stopPropagation() // Prevent card click
-		
-		if (!userLocation) return
-		
-		// Create Google Maps directions URL
-		// Format: https://www.google.com/maps/dir/?api=1&origin=LAT,LNG&destination=LAT,LNG
-		const origin = `${userLocation.lat},${userLocation.lng}`
-		const destination = `${report.location.lat},${report.location.lng}`
-		const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`
-		
-		// Open in new tab/window
-		window.open(googleMapsUrl, '_blank', 'noopener,noreferrer')
-	}
-
 	const handleOpenInGoogleMaps = (e: React.MouseEvent) => {
 		e.stopPropagation() // Prevent card click
 		
