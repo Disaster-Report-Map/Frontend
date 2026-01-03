@@ -18,9 +18,12 @@ export const apiClient = axios.create({
 apiClient.interceptors.request.use(
 	(config) => {
 		const state = store.getState()
-		const token = state.auth.token
+		const token = state.auth?.token
 		if (token) {
 			config.headers.Authorization = `Token ${token}`
+		} else {
+			// Remove authorization header if no token
+			delete config.headers.Authorization
 		}
 		return config
 	},

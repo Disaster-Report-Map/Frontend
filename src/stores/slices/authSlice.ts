@@ -3,19 +3,14 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { AuthState, User, LoginCredentials, RegisterCredentials, AuthResponse, GoogleSignInResponse } from '../../types/auth'
 import * as authApi from '../../api/auth'
 
-const initialState: AuthState = {
-	user: null,
-	token: localStorage.getItem('auth_token'),
-	isAuthenticated: false,
-	isLoading: false,
-	error: null,
-}
-
 // Initialize auth state from localStorage
 const token = localStorage.getItem('auth_token')
-if (token) {
-	initialState.token = token
-	initialState.isAuthenticated = true
+const initialState: AuthState = {
+	user: null,
+	token: token,
+	isAuthenticated: !!token, // Set to true if token exists
+	isLoading: false,
+	error: null,
 }
 
 /**

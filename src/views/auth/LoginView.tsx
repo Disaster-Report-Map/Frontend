@@ -24,7 +24,10 @@ export function LoginView() {
 			const result = await login({ email, password })
 			if (result.type === 'auth/login/fulfilled') {
 				toast.success('Login successful!')
-				navigate(from, { replace: true })
+				// Wait a brief moment to ensure Redux state is updated
+				setTimeout(() => {
+					navigate(from, { replace: true })
+				}, 100)
 			} else {
 				const errorMessage = (result.payload as string) || error || 'Login failed'
 				toast.error(errorMessage)
