@@ -1,8 +1,8 @@
 import { MapPin, LogOut, User } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
 import { getDisasterDisplayName } from '../../utils'
 import { useHealthCheck, useReporterId } from '../../hooks/api/useReports'
 import { useAuth } from '../../hooks/auth/useAuth'
-import { useNavigate } from 'react-router-dom'
 import type { DisasterType } from '../../types'
 
 interface NavbarProps {
@@ -97,12 +97,12 @@ export const Navbar = ({ className }: NavbarProps) => {
 							</button>
 						</div>
 					) : (
-						<button
-							onClick={() => navigate('/login')}
-							className="px-4 py-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
+						<Link
+							to="/login"
+							className="px-4 py-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors inline-block text-center"
 						>
 							Sign In
-						</button>
+						</Link>
 					)}
 
 					{/* Reporter ID */}
