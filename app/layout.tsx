@@ -1,6 +1,6 @@
-import '. /styles/globals.css'
+import '../styles/globals.css'
 import React from 'react'
-
+  
 export const metadata = {
   title: 'Disaster Report Map',
 }
