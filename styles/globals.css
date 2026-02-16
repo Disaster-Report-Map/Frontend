@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+/* Minimal global styles for dark mode */
+:root {
+  color-scheme: light dark;
+}
