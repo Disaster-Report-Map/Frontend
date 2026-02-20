@@ -6,5 +6,7 @@ export type User = {
   email: string
   role: Role
   profileImageUrl?: string
+  createdAt?: string
 }
+
 
