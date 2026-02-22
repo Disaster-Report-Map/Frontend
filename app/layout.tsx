@@ -14,7 +14,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark h-full">
+    <html lang="en" className="dark">
       {/* 
         `flex flex-col min-h-screen` guarantees the footer gets completely pushed 
         to the bottom of the visible screen on pages with short content (like login)
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         
         {/* Core page routing layer takes remaining flex-1 space */}
-        <main className="flex-1 flex flex-col w-full h-full relative z-[1]">
+        <main className="flex-1 flex flex-col w-full relative z-[1]">
           {children}
         </main>
         
