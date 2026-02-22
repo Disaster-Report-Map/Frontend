@@ -67,11 +67,19 @@ export default function DisasterMap({
 
       mapInstanceRef.current = map;
 
-      // Add default OpenStreetMap tiles
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors',
-        maxZoom: 19,
+      // Add elegant Dark Mode map tiles suitable for the dashboard's design
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 20,
       }).addTo(map);
+
+      // Fix critical Leaflet gray tiles issue where it thinks container is 0x0 length at creation
+      setTimeout(() => {
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.invalidateSize();
+        }
+      }, 250);
 
       // Include basic map scale control
       L.control.scale({ imperial: false, metric: true }).addTo(map);
@@ -120,7 +128,17 @@ export default function DisasterMap({
       markers.forEach((markerObj) => {
         const marker = L.marker([markerObj.lat, markerObj.lng]);
         if (markerObj.title) {
-          marker.bindPopup(`<b>${markerObj.title}</b>`);
+          // A customized HTML template ensures the modal text color bypasses any dark-mode overriding by nextjs body css
+          const popupHtml = `
+            <div style="min-width: 140px; text-align: left; font-family: sans-serif;">
+              <strong style="color: #1e293b; font-size: 14px; font-weight: 600; display: block; margin-bottom: 4px;">${markerObj.title}</strong>
+              <small style="color: #64748b; font-size: 12px; display: block; border-top: 1px solid #e2e8f0; padding-top: 4px;">Disaster Report Match</small>
+            </div>
+          `;
+          marker.bindPopup(popupHtml, {
+            closeButton: false, // Cleaner minimalist look
+            className: 'custom-dashboard-popup',
+          });
         }
         markersLayer.addLayer(marker);
       });
