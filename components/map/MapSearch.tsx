@@ -1,5 +1,5 @@
-'use client';
 import React, { useState } from 'react';
+import { Search, X } from 'lucide-react';
 
 interface MapSearchProps {
   onLocationSelect: (lat: number, lng: number) => void;
@@ -44,9 +44,7 @@ export default function MapSearch({ onLocationSelect }: MapSearchProps) {
           title="Search Location"
           className={`shrink-0 flex items-center justify-center w-12 h-12 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors ${expanded ? 'pointer-events-none' : 'md:pointer-events-none'}`}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-          </svg>
+          <Search className="w-5 h-5" />
         </button>
         
         <input 
@@ -71,7 +69,7 @@ export default function MapSearch({ onLocationSelect }: MapSearchProps) {
              onClick={() => { setExpanded(false); setQuery(''); }}
              className="md:hidden shrink-0 flex items-center justify-center px-4 py-3 text-slate-400 hover:text-slate-600 transition-colors bg-slate-50 dark:bg-slate-800"
           >
-             ✕
+             <X className="w-5 h-5" />
           </button>
         )}
       </form>
