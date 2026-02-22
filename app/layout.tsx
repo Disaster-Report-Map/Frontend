@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import 'leaflet/dist/leaflet.css' // Fixes the vertical line / missing map CSS issue
 import React from 'react'
   
 export const metadata = {
