@@ -11,14 +11,14 @@ export default function MapContainer({ incidents }: { incidents: Incident[] }) {
   const mapInstance = useRef<mapboxgl.Map | null>(null)
 
   useEffect(() => {
-    if (!mapRef.current || mapInstance.current) return
-    mapInstance.current = new mapboxgl.Map({
-      container: mapRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [0, 20],
-      zoom: 2,
-    })
-    return () => mapInstance.current?.remove()
+    // if (!mapRef.current || mapInstance.current) return
+    // mapInstance.current = new mapboxgl.Map({
+    //   container: mapRef.current,
+    //   style: 'mapbox://styles/mapbox/streets-v11',
+    //   center: [0, 20],
+    //   zoom: 2,
+    // })
+    // return () => mapInstance.current?.remove()
   }, [])
 
   useEffect(() => {
