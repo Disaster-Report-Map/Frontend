@@ -41,14 +41,20 @@ export default function DashboardPage() {
   // Generate dummy data dynamically AROUND the user's actual location based on DRM documentation roles
   const markers = useMemo(() => {
     if (!userPos) {
-      // Fallback if location access is denied or still loading (simulating a "flood" and "accident")
-      return [
-        { lat: 40.7128, lng: -74.0060, title: "🌊 Flood - Downtown (Active)" },
-        { lat: 40.7580, lng: -73.9855, title: "💥 Accident - Times Square (Pending)" },
-      ]
+      return []
     }
 
     // Generate simulated disasters very close to the user's real location based on DRM Doc Schema 4.2
+    const baseMarkers = [
+      { lat: userPos.lat + 0.005, lng: userPos.lng - 0.005, title: "Flood Level Rising - Sector 4", category: "flood", status: "active" },
+      { lat: userPos.lat - 0.010, lng: userPos.lng + 0.008, title: "Warehouse Fire", category: "fire", status: "active" },
+      { lat: userPos.lat + 0.015, lng: userPos.lng + 0.015, title: "Multi-vehicle Accident", category: "accident", status: "pending" },
+      { lat: userPos.lat - 0.005, lng: userPos.lng - 0.015, title: "Medical Emergency", category: "medical", status: "resolved" },
+      { lat: userPos.lat + 0.001, lng: userPos.lng + 0.002, title: "Secondary Flooding", category: "flood", status: "active" },
+      { lat: userPos.lat - 0.002, lng: userPos.lng - 0.001, title: "Chemical Fire Exposure", category: "fire", status: "active" },
+      { lat: userPos.lat + 0.003, lng: userPos.lng - 0.003, title: "Highway Collision", category: "accident", status: "active" },
+      { lat: userPos.lat - 0.004, lng: userPos.lng + 0.004, title: "Heart Attack Report", category: "medical", status: "pending" },
+      { lat: userPos.lat, lng: userPos.lng, title: "📍 YOU ARE HERE", category: "person", status: "active" }, 
     ]
 
     // Apply the active dashboard UI filters locally without making new backend requests
