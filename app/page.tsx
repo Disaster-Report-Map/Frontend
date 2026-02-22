@@ -8,9 +8,6 @@ export default function Home() {
       <section className="relative w-full py-20 lg:py-32 overflow-hidden flex flex-col items-center justify-center text-center px-4">
         <div className="absolute inset-0 z-0 opacity-10 dark:opacity-20 pointer-events-none"></div>
         <div className="z-10 max-w-4xl mx-auto space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm font-semibold mb-4 border border-blue-200 dark:border-blue-800/50">
-            Live Hackathon MVP Active
-          </div>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
             Crowdsourced Intelligence for <br className="hidden md:block" />
             <span className="text-blue-600 dark:text-blue-500">
