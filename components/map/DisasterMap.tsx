@@ -67,11 +67,10 @@ export default function DisasterMap({
 
       mapInstanceRef.current = map;
 
-      // Add elegant Dark Mode map tiles suitable for the dashboard's design
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-        subdomains: 'abcd',
-        maxZoom: 20,
+      // Add default OpenStreetMap tiles (Light Mode)
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19,
       }).addTo(map);
 
       // Fix critical Leaflet gray tiles issue where it thinks container is 0x0 length at creation
