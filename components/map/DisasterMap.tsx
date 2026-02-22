@@ -67,9 +67,9 @@ export default function DisasterMap({
 
       mapInstanceRef.current = map;
 
-      // Add default OpenStreetMap tiles
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors',
+      // Add an elegant dark map tile layer (CartoDB Dark Matter)
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
         maxZoom: 19,
       }).addTo(map);
 
