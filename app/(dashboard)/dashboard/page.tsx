@@ -18,6 +18,11 @@ export default function DashboardPage() {
   // Google Maps Style feature states
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [forcedCenter, setForcedCenter] = useState<{ lat: number; lng: number } | null>(null)
+  
+  // Click-to-report feature states
+  const [draftLocation, setDraftLocation] = useState<{ lat: number; lng: number } | null>(null)
+  const [reportForm, setReportForm] = useState({ title: '', category: 'other' })
+  const [dynamicMarkers, setDynamicMarkers] = useState<any[]>([])
 
   useEffect(() => {
     // We still call this so when backend is ready, data starts fetching
@@ -54,7 +59,7 @@ export default function DashboardPage() {
       { lat: userPos.lat - 0.002, lng: userPos.lng - 0.001, title: "Chemical Fire Exposure", category: "fire", status: "active" },
       { lat: userPos.lat + 0.003, lng: userPos.lng - 0.003, title: "Highway Collision", category: "accident", status: "active" },
       { lat: userPos.lat - 0.004, lng: userPos.lng + 0.004, title: "Heart Attack Report", category: "medical", status: "pending" },
-      { lat: userPos.lat, lng: userPos.lng, title: "📍 YOU ARE HERE", category: "person", status: "active" }, 
+      ...dynamicMarkers
     ]
 
     // Apply the active dashboard UI filters locally without making new backend requests
@@ -63,15 +68,38 @@ export default function DashboardPage() {
     }
 
     return baseMarkers;
-  }, [userPos, activeCategory])
+  }, [userPos, activeCategory, dynamicMarkers])
+
+  const handleReportSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!draftLocation || !reportForm.title) return
+
+    setDynamicMarkers((prev) => [
+      ...prev,
+      { 
+        lat: draftLocation.lat, 
+        lng: draftLocation.lng, 
+        title: reportForm.title, 
+        category: reportForm.category, 
+        status: "active" 
+      }
+    ])
+
+    // Reset draft and form
+    setDraftLocation(null)
+    setReportForm({ title: '', category: 'other' })
+  }
 
   return (
-    <div className="relative w-full h-full flex-1 overflow-hidden">
+    <div className="relative w-full h-full flex-1 overflow-hidden font-sans">
       {/* Full screen absolute map underneath */}
       <div className="absolute inset-0 z-0 bg-slate-800/50">
         <DisasterMap
           markers={markers}
           forcedCenter={forcedCenter}
+          onMapClick={(lat, lng) => setDraftLocation({ lat, lng })}
+          draftReportLocation={draftLocation}
+          userLocation={userPos} // Explicit new beacon
           // The radar dynamically acts as a "Disaster Coverage Zone" for the closest active Flood incident in this demo
           radarCenter={userPos ? { lat: userPos.lat + 0.005, lng: userPos.lng - 0.005 } : { lat: 40.7128, lng: -74.0060 }} 
           radarRadiusMeters={1500} // Defines the 1.5km spread of the disaster zone
@@ -89,13 +117,77 @@ export default function DashboardPage() {
 
       {/* Interactive Bottom Right Controls */}
       <MapControls 
-        categories={['fire', 'flood', 'accident', 'medical']}
+        categories={['fire', 'flood', 'accident', 'medical', 'earthquake']}
         activeCategory={activeCategory}
         onFilterChange={setActiveCategory}
         onRecenter={() => {
           if (userPos) setForcedCenter({ ...userPos });
         }}
       />
+
+      {/* Click-to-Report Floating Modal */}
+      {draftLocation && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl z-[1000] p-6 animate-in fade-in zoom-in duration-200">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Report Incident</h2>
+            <button 
+              onClick={() => setDraftLocation(null)}
+              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"
+            >
+              ✕
+            </button>
+          </div>
+          <p className="text-xs text-slate-500 mb-5">
+            Location locked at: {draftLocation.lat.toFixed(4)}, {draftLocation.lng.toFixed(4)}
+          </p>
+
+          <form onSubmit={handleReportSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Disaster Type</label>
+              <select 
+                value={reportForm.category}
+                onChange={(e) => setReportForm({ ...reportForm, category: e.target.value })}
+                className="w-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="fire">🔥 Fire</option>
+                <option value="flood">🌊 Flood</option>
+                <option value="earthquake">⛰️ Earthquake</option>
+                <option value="accident">💥 Traffic Accident</option>
+                <option value="medical">🚑 Medical Emergency</option>
+                <option value="other">⚠️ Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
+              <input 
+                type="text"
+                required
+                placeholder="Brief description (e.g., Heavy flooding on Main St)"
+                value={reportForm.title}
+                onChange={(e) => setReportForm({ ...reportForm, title: e.target.value })}
+                className="w-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="pt-2 flex gap-3">
+              <button 
+                type="button" 
+                onClick={() => setDraftLocation(null)}
+                className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                type="submit" 
+                className="flex-1 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-lg shadow-md transition-colors"
+              >
+                Submit Report
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   )
 }

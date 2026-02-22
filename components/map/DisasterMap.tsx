@@ -20,6 +20,12 @@ export interface DisasterMapProps {
   radarRadiusMeters?: number;
   /** Pass a coordinate to actively pan the map (used for Search & Re-center) */
   forcedCenter?: { lat: number; lng: number } | null;
+  /** Callback fired when user clicks anywhere on the map */
+  onMapClick?: (lat: number, lng: number) => void;
+  /** Coordinate to display a pulsing radar for a draft report */
+  draftReportLocation?: { lat: number; lng: number } | null;
+  /** Explicitly rendering the user's active GPS coordinate distinct from incidents */
+  userLocation?: { lat: number; lng: number } | null;
 }
 
 /**
@@ -39,11 +45,22 @@ export default function DisasterMap({
   radarCenter,
   radarRadiusMeters = 1000,
   forcedCenter = null,
+  onMapClick,
+  draftReportLocation = null,
+  userLocation = null,
 }: DisasterMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null); // L.Map
   const markersLayerRef = useRef<any>(null); // L.LayerGroup
   const radarLayerRef = useRef<any>(null); // L.Circle
+  const draftLayerRef = useRef<any>(null); // L.CircleMarker
+  const userMarkerRef = useRef<any>(null); // L.Marker
+
+  // Keep a fresh reference to the click callback without re-binding Leaflet events
+  const onMapClickRef = useRef(onMapClick);
+  useEffect(() => {
+    onMapClickRef.current = onMapClick;
+  }, [onMapClick]);
 
   useEffect(() => {
     let L: any;
@@ -87,6 +104,13 @@ export default function DisasterMap({
 
       // Include basic map scale control
       L.control.scale({ imperial: false, metric: true }).addTo(map);
+
+      // Listen for click-to-report
+      map.on('click', (e: any) => {
+        if (onMapClickRef.current) {
+          onMapClickRef.current(e.latlng.lat, e.latlng.lng);
+        }
+      });
 
       // Layer groups for dynamic manipulation
       markersLayerRef.current = L.layerGroup().addTo(map);
@@ -222,6 +246,76 @@ export default function DisasterMap({
       }
     });
   }, [radarCenter, radarRadiusMeters]);
+
+  // Effect to handle Draft Report pulsing radar
+  useEffect(() => {
+    if (!mapInstanceRef.current || !draftReportLocation) {
+      if (draftLayerRef.current && mapInstanceRef.current) {
+        mapInstanceRef.current.removeLayer(draftLayerRef.current);
+        draftLayerRef.current = null;
+      }
+      return;
+    }
+
+    import("leaflet").then((leaflet) => {
+      const L = leaflet.default;
+      const map = mapInstanceRef.current;
+
+      if (draftLayerRef.current) map.removeLayer(draftLayerRef.current);
+
+      draftLayerRef.current = L.circleMarker([draftReportLocation.lat, draftReportLocation.lng], {
+        radius: 8,
+        color: '#f43f5e', // rose-500
+        fillColor: '#f43f5e',
+        fillOpacity: 0.8,
+        weight: 2,
+        className: 'animate-ping' // Tailwind animation class native integration!
+      }).addTo(map);
+
+      // Also add a hard center dot
+      L.circleMarker([draftReportLocation.lat, draftReportLocation.lng], {
+        radius: 4,
+        color: '#fff',
+        fillColor: '#be123c', // rose-700
+        fillOpacity: 1,
+        weight: 1,
+      }).addTo(map);
+    });
+  }, [draftReportLocation]);
+
+  // Effect to handle Live User Location beacon
+  useEffect(() => {
+    if (!mapInstanceRef.current || !userLocation) {
+      if (userMarkerRef.current && mapInstanceRef.current) {
+        mapInstanceRef.current.removeLayer(userMarkerRef.current);
+        userMarkerRef.current = null;
+      }
+      return;
+    }
+
+    import("leaflet").then((leaflet) => {
+      const L = leaflet.default;
+      const map = mapInstanceRef.current;
+
+      if (userMarkerRef.current) map.removeLayer(userMarkerRef.current);
+
+      const userIcon = L.divIcon({
+        html: `<div class="w-4 h-4 bg-blue-500 border-2 border-white rounded-full shadow-[0_0_10px_rgba(59,130,246,0.8)]"><div class="w-full h-full bg-blue-400 rounded-full animate-ping opacity-75"></div></div>`,
+        className: 'bg-transparent border-0',
+        iconSize: L.point(16, 16),
+        iconAnchor: L.point(8, 8)
+      });
+
+      userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { icon: userIcon, zIndexOffset: 1000 }).addTo(map);
+      
+      const popupHtml = `
+        <div style="min-width: 120px; text-align: left; font-family: sans-serif; padding: 2px;">
+          <strong style="color: #1e293b; font-size: 14px; font-weight: 700;">📍 Your Location</strong>
+        </div>
+      `;
+      userMarkerRef.current.bindPopup(popupHtml, { className: 'custom-dashboard-popup', closeButton: false });
+    });
+  }, [userLocation]);
 
   return (
     // Responsive container using Tailwind classes, perfectly filling the full screen bounds
