@@ -8,7 +8,7 @@ export default function MyReports() {
   React.useEffect(() => { fetchIncidents() }, [fetchIncidents])
 
   return (
-    <div>
+    <div className="w-full max-w-6xl mx-auto px-4 py-6 flex-1">
       <h2 className="text-xl font-semibold mb-4">My Reports</h2>
       <ul className="space-y-3">
         {incidents.map((i) => (
