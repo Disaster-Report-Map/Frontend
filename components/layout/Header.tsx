@@ -20,7 +20,6 @@ export default function Header() {
     <header className="w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-[1000] shadow-sm">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-          <img src="/icon.png" alt="DRM Logo" className="w-8 h-8 object-contain" />
           DRM
         </Link>
         

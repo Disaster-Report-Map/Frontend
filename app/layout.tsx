@@ -6,6 +6,10 @@ import Footer from '../components/layout/Footer'
   
 export const metadata = {
   title: 'Disaster Report Map (DRM)',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/icon.png', // Fallback for iOS bookmarks
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
