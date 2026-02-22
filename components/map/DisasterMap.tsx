@@ -160,11 +160,11 @@ export default function DisasterMap({
   }, [radarCenter, radarRadiusMeters]);
 
   return (
-    // Responsive container using Tailwind classes
-    <div className="relative w-full h-full min-h-[400px] rounded-lg shadow-md overflow-hidden z-0">
+    // Responsive container using Tailwind classes, with strict min-height to prevent Leaflet collapse
+    <div className="relative w-full h-full min-h-[600px] rounded-lg shadow-md overflow-hidden z-0">
       <div 
         ref={mapContainerRef} 
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: '100%', minHeight: '600px' }}
         className="w-full h-full"
       />
     </div>
