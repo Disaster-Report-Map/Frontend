@@ -5,4 +5,8 @@ export type User = {
   name: string
   email: string
   role: Role
+  profileImageUrl?: string
+  createdAt?: string
 }
+
+

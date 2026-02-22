@@ -17,7 +17,16 @@ export const authApi = {
   logout: () => api.post('/auth/logout')
 }
 
+export const userApi = {
+  getProfile: () => api.get('/users/me'),
+  updateProfile: (data: any) => api.patch('/users/me', data),
+  changePassword: (data: any) => api.put('/users/me/password', data),
+  deleteAccount: () => api.delete('/users/me'),
+}
+
+
 export const incidentsApi = {
+
   list: () => api.get('/incidents'),
   create: (payload: any) => api.post('/incidents', payload),
   update: (id: string, payload: any) => api.patch(`/incidents/${id}`, payload),
