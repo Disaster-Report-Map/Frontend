@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Layers, LocateFixed } from 'lucide-react';
 
 interface MapControlsProps {
   onRecenter: () => void;
@@ -42,9 +43,7 @@ export default function MapControls({ onRecenter, categories, activeCategory, on
           className={`w-12 h-12 bg-slate-900 hover:bg-slate-800 text-white rounded-full shadow-lg flex items-center justify-center transition-transform active:scale-95 border border-slate-700 ${activeCategory ? 'ring-2 ring-blue-500' : ''}`}
           title="Filter Incidents"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-          </svg>
+          <Layers className="w-5 h-5" />
         </button>
       </div>
 
@@ -54,10 +53,7 @@ export default function MapControls({ onRecenter, categories, activeCategory, on
         className="w-12 h-12 self-end bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
         title="My Location"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-        </svg>
+        <LocateFixed className="w-6 h-6" />
       </button>
 
     </div>
