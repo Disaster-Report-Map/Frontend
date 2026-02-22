@@ -4,6 +4,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 import { useIncidents } from '../../../hooks/useIncidents'
 import MapSearch from '../../../components/map/MapSearch'
 import MapControls from '../../../components/map/MapControls'
+import { toast } from 'sonner'
 
 // Dynamically import the DisasterMap component to aggressively avoid SSR issues with Leaflet
 const DisasterMap = dynamic(() => import('../../../components/map/DisasterMap'), {
@@ -85,6 +86,8 @@ export default function DashboardPage() {
       }
     ])
 
+    toast.success("Disaster reported successfully!");
+
     // Reset draft and form
     setDraftLocation(null)
     setReportForm({ title: '', category: 'other' })
@@ -121,7 +124,27 @@ export default function DashboardPage() {
         activeCategory={activeCategory}
         onFilterChange={setActiveCategory}
         onRecenter={() => {
-          if (userPos) setForcedCenter({ ...userPos });
+          if (navigator.geolocation) {
+            toast.loading("Locating you...", { id: "gps" });
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                const { latitude, longitude } = pos.coords;
+                setUserPos({ lat: latitude, lng: longitude });
+                
+                // We add a tiny randomized offset to the timestamp so React ALWAYS respects it as a new distinct object reference 
+                // to explicitly trigger the exact same [forcedCenter] useEffect dependency inside DisasterMap.tsx
+                setForcedCenter({ lat: latitude, lng: longitude, t: Date.now() } as any);
+                toast.success("Location updated", { id: "gps" });
+              },
+              (err) => {
+                toast.error("Please allow location access.", { id: "gps" });
+                console.warn(err);
+              },
+              { enableHighAccuracy: true }
+            );
+          } else {
+            toast.error("Geolocation not supported.", { id: "gps" });
+          }
         }}
       />
 

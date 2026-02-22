@@ -3,6 +3,7 @@ import 'leaflet/dist/leaflet.css' // Fixes the vertical line / missing map CSS i
 import React from 'react'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
+import { Toaster } from 'sonner'
   
 export const metadata = {
   title: 'Disaster Report Map (DRM)',
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         
         <Footer />
+        <Toaster position="bottom-center" richColors closeButton />
       </body>
     </html>
   )
