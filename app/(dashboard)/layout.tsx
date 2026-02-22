@@ -10,9 +10,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href="/" className="font-bold">DRM</Link>
           <nav className="flex gap-3">
             <Link href="/dashboard" className="px-3 py-1 rounded">Dashboard</Link>
-            <Link href="/dashboard/my-reports" className="px-3 py-1 rounded">My Reports</Link>
-            <Link href="/dashboard/settings" className="px-3 py-1 rounded">Settings</Link>
-
+            <Link href="/my-reports" className="px-3 py-1 rounded">My Reports</Link>
+            <Link href="/settings" className="px-3 py-1 rounded">Settings</Link>
           </nav>
         </div>
       </header>
