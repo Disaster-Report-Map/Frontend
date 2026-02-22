@@ -7,6 +7,8 @@ export interface MapMarker {
   lat: number;
   lng: number;
   title?: string;
+  category?: string; // e.g. 'fire', 'flood'
+  status?: string;   // e.g. 'active', 'resolved'
 }
 
 export interface DisasterMapProps {
@@ -110,44 +112,86 @@ export default function DisasterMap({
     };
   }, []); // Run once on mount
 
-  // Effect to handle dynamic marker updates
+  // Effect to handle dynamic marker updates & Marker Clustering
   useEffect(() => {
-    if (!mapInstanceRef.current || !markersLayerRef.current) return;
+    if (!mapInstanceRef.current) return;
 
-    // We fetch L from window since Leaflet sets itself on window when imported
-    // Or we dynamically import again, but since it's already loaded, we can use `require("leaflet")` safely here
-    import("leaflet").then((leaflet) => {
+    Promise.all([
+      import("leaflet"),
+      import("leaflet.markercluster"),
+    ]).then(([leaflet]) => {
       const L = leaflet.default;
-      const markersLayer = markersLayerRef.current;
+      const map = mapInstanceRef.current;
 
-      // Clear existing markers
-      markersLayer.clearLayers();
+      // Clean up previously built clusters to prevent memory leaks during React hot-reloading or data updates
+      if (markersLayerRef.current) {
+        map.removeLayer(markersLayerRef.current);
+      }
+
+      // Initialize the advanced marker clusterer
+      // @ts-ignore - plugin injects to L object
+      const markersLayer = L.markerClusterGroup({
+        chunkedLoading: true, // Smooths out performance when processing 100+ points
+        iconCreateFunction: (cluster: any) => {
+          const count = cluster.getChildCount();
+          let c = 'bg-blue-600/90 shadow-blue-500/50';
+          if (count >= 10) c = 'bg-rose-600/90 shadow-rose-500/50';
+          
+          return L.divIcon({ 
+            html: `<div class="flex items-center justify-center w-10 h-10 rounded-full text-white font-bold shadow-lg ${c}">${count}</div>`,
+            className: 'custom-cluster-icon bg-transparent border-0', 
+            iconSize: L.point(40, 40) 
+          });
+        }
+      });
 
       // Add new markers from the array
       markers.forEach((markerObj) => {
         const marker = L.marker([markerObj.lat, markerObj.lng]);
         if (markerObj.title) {
           // A customized HTML template ensures the modal text color bypasses any dark-mode overriding by nextjs body css
+          let badgeColor = '#3b82f6'; // blue base
+          if (markerObj.category === 'fire') badgeColor = '#ef4444';
+          if (markerObj.category === 'flood') badgeColor = '#0ea5e9';
+          if (markerObj.category === 'medical') badgeColor = '#10b981';
+
           const popupHtml = `
-            <div style="min-width: 140px; text-align: left; font-family: sans-serif;">
-              <strong style="color: #1e293b; font-size: 14px; font-weight: 600; display: block; margin-bottom: 4px;">${markerObj.title}</strong>
-              <small style="color: #64748b; font-size: 12px; display: block; border-top: 1px solid #e2e8f0; padding-top: 4px;">Disaster Report Match</small>
+            <div style="min-width: 180px; text-align: left; font-family: sans-serif; padding: 2px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                 <span style="background: ${badgeColor}20; color: ${badgeColor}; padding: 2px 8px; border-radius: 99px; font-size: 10px; font-weight: bold; text-transform: uppercase;">
+                   ${markerObj.category || 'Incident'}
+                 </span>
+                 <span style="font-size: 10px; color: ${markerObj.status === 'resolved' ? '#10b981' : '#f59e0b'}; font-weight: bold;">
+                    ● ${markerObj.status || 'Active'}
+                 </span>
+              </div>
+              <strong style="color: #1e293b; font-size: 14px; font-weight: 700; display: block; margin-bottom: 6px; line-height: 1.2;">
+                ${markerObj.title}
+              </strong>
+              <button style="width: 100%; border: none; background: #f8fafc; color: #334155; font-size: 11px; font-weight: 600; padding: 6px; border-radius: 4px; cursor: pointer; border: 1px solid #e2e8f0;">
+                View Details
+              </button>
             </div>
           `;
           marker.bindPopup(popupHtml, {
             closeButton: false, // Cleaner minimalist look
             className: 'custom-dashboard-popup',
+            minWidth: 200,
           });
         }
         markersLayer.addLayer(marker);
       });
 
-      // Auto-zoom map to fit all markers nicely
+      // Save reference and map it
+      markersLayerRef.current = markersLayer;
+      map.addLayer(markersLayer);
+
+      // Auto-zoom map to fit all markers nicely if we have raw markers and no user-forced zoom state
       if (markers.length > 0) {
-        const group = L.featureGroup(markersLayer.getLayers());
-        mapInstanceRef.current.fitBounds(group.getBounds(), { padding: [50, 50] });
+        map.fitBounds(markersLayer.getBounds(), { padding: [50, 50], maxZoom: 15 });
       }
     });
+
   }, [markers]);
 
   // Effect to handle radar overlay updates
