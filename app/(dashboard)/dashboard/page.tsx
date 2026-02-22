@@ -107,9 +107,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Floating Panel for Title */}
-      <div className="absolute top-4 left-4 z-[400] bg-slate-900/90 backdrop-blur pb-3 pt-3 px-5 rounded-lg border border-slate-700/50 shadow-xl pointer-events-none hidden md:block">
-        <h1 className="text-xl font-bold text-slate-100">Disaster Reports </h1>
-        <p className="text-slate-400 text-xs mt-1">Real-time overview of Disaster happening around you</p>
+      <div className="absolute top-4 left-4 z-[400] bg-slate-900/90 backdrop-blur py-2 px-3 sm:py-3 sm:px-5 rounded-lg border border-slate-700/50 shadow-xl pointer-events-none max-w-[200px] sm:max-w-xs transition-opacity duration-300">
+        <h1 className="text-sm sm:text-xl font-bold text-slate-100 leading-tight">Disaster Reports</h1>
+        <p className="text-slate-400 text-[10px] sm:text-xs mt-0.5 leading-snug">Real-time overview of Disasters happening around you</p>
       </div>
 
       {/* Search Input for Geocoding Locations */}
