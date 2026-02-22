@@ -20,22 +20,22 @@ export function proxy(req: NextRequest) {
 
   // protect dashboard routes
   if (req.nextUrl.pathname.startsWith("/dashboard")) {
-    if (!token) {
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
+    // if (!token) {
+    //   url.pathname = "/login";
+    //   return NextResponse.redirect(url);
+    // }
   }
 
   if (req.nextUrl.pathname.startsWith("/admin")) {
-    if (!token) {
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
-    const payload = decodeJwt(token);
-    if (!payload || payload.role !== "admin") {
-      url.pathname = "/";
-      return NextResponse.redirect(url);
-    }
+    // if (!token) {
+    //   url.pathname = "/login";
+    //   return NextResponse.redirect(url);
+    // }
+    // const payload = decodeJwt(token);
+    // if (!payload || payload.role !== "admin") {
+    //   url.pathname = "/";
+    //   return NextResponse.redirect(url);
+    // }
   }
 
   return NextResponse.next();
