@@ -124,6 +124,12 @@ export default function DisasterMap({
         }
         markersLayer.addLayer(marker);
       });
+
+      // Auto-zoom map to fit all markers nicely
+      if (markers.length > 0) {
+        const group = L.featureGroup(markersLayer.getLayers());
+        mapInstanceRef.current.fitBounds(group.getBounds(), { padding: [50, 50] });
+      }
     });
   }, [markers]);
 
