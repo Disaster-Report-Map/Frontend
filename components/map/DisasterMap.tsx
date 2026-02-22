@@ -18,6 +18,8 @@ export interface DisasterMapProps {
   radarCenter?: { lat: number; lng: number };
   /** Radius of the radar coverage in meters */
   radarRadiusMeters?: number;
+  /** Pass a coordinate to actively pan the map (used for Search & Re-center) */
+  forcedCenter?: { lat: number; lng: number } | null;
 }
 
 /**
@@ -36,6 +38,7 @@ export default function DisasterMap({
   markers = [],
   radarCenter,
   radarRadiusMeters = 1000,
+  forcedCenter = null,
 }: DisasterMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null); // L.Map
