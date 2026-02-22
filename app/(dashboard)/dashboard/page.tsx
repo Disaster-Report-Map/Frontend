@@ -52,19 +52,21 @@ export default function DashboardPage() {
   }, [userPos])
 
   return (
-    <div className="flex flex-col h-full space-y-4 p-4">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-100">Live Dashboard</h1>
-        <p className="text-slate-400 text-sm mt-1">Real-time overview of reported disasters around your location.</p>
-      </div>
-
-      <div className="w-full bg-slate-800/50 relative">
+    <div className="relative w-full h-full flex-1 overflow-hidden">
+      {/* Full screen absolute map underneath */}
+      <div className="absolute inset-0 z-0 bg-slate-800/50">
         <DisasterMap
           markers={markers}
           // The radar dynamically centers exactly on the user if we have their location
           radarCenter={userPos ? userPos : { lat: 40.7128, lng: -74.0060 }} 
           radarRadiusMeters={3000} // 3km radius
         />
+      </div>
+
+      {/* Floating Panel for Title */}
+      <div className="absolute top-4 left-4 z-[400] bg-slate-900/90 backdrop-blur pb-3 pt-3 px-5 rounded-lg border border-slate-700/50 shadow-xl pointer-events-none">
+        <h1 className="text-xl font-bold text-slate-100">Live Dashboard</h1>
+        <p className="text-slate-400 text-xs mt-1">Real-time overview around your location.</p>
       </div>
     </div>
   )
