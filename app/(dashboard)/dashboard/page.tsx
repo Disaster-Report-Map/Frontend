@@ -32,22 +32,23 @@ export default function DashboardPage() {
     }
   }, [fetchIncidents])
 
-  // Temporarily generate dummy data dynamically AROUND the user's actual location
+  // Generate dummy data dynamically AROUND the user's actual location based on DRM documentation roles
   const markers = useMemo(() => {
     if (!userPos) {
-      // Fallback if location access is denied or still loading
+      // Fallback if location access is denied or still loading (simulating a "flood" and "accident")
       return [
-        { lat: 40.7128, lng: -74.0060, title: "Major Flooding - Downtown" },
-        { lat: 40.7580, lng: -73.9855, title: "Blocked Road - Times Square" },
+        { lat: 40.7128, lng: -74.0060, title: "🌊 Flood - Downtown (Active)" },
+        { lat: 40.7580, lng: -73.9855, title: "💥 Accident - Times Square (Pending)" },
       ]
     }
 
-    // Generate simulated disasters very close to the user's real location
+    // Generate simulated disasters very close to the user's real location based on DRM Doc Schema 4.2
     return [
-      { lat: userPos.lat + 0.005, lng: userPos.lng - 0.005, title: "⚠️ Reported Flooding" },
-      { lat: userPos.lat - 0.010, lng: userPos.lng + 0.008, title: "⚡ Power Outage" },
-      { lat: userPos.lat + 0.015, lng: userPos.lng + 0.015, title: "🌲 Fallen Trees" },
-      { lat: userPos.lat, lng: userPos.lng, title: "📍 YOU ARE HERE" }, 
+      { lat: userPos.lat + 0.005, lng: userPos.lng - 0.005, title: "🌊 Flood Level Rising - Sector 4 (Active)" },
+      { lat: userPos.lat - 0.010, lng: userPos.lng + 0.008, title: "🔥 Warehouse Fire (Active)" },
+      { lat: userPos.lat + 0.015, lng: userPos.lng + 0.015, title: "💥 Multi-vehicle Accident (Pending)" },
+      { lat: userPos.lat - 0.005, lng: userPos.lng - 0.015, title: "🚑 Medical Emergency (Resolved)" },
+      { lat: userPos.lat, lng: userPos.lng, title: "📍 YOU ARE HERE (Citizen)" }, 
     ]
   }, [userPos])
 
@@ -57,9 +58,9 @@ export default function DashboardPage() {
       <div className="absolute inset-0 z-0 bg-slate-800/50">
         <DisasterMap
           markers={markers}
-          // The radar dynamically centers exactly on the user if we have their location
-          radarCenter={userPos ? userPos : { lat: 40.7128, lng: -74.0060 }} 
-          radarRadiusMeters={3000} // 3km radius
+          // The radar dynamically acts as a "Disaster Coverage Zone" for the closest active Flood incident in this demo
+          radarCenter={userPos ? { lat: userPos.lat + 0.005, lng: userPos.lng - 0.005 } : { lat: 40.7128, lng: -74.0060 }} 
+          radarRadiusMeters={1500} // Defines the 1.5km spread of the disaster zone
         />
       </div>
 
