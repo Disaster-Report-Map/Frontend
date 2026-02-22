@@ -6,9 +6,9 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between text-sm">
         <p>&copy; {new Date().getFullYear()} Disaster Report Map Platform. All Rights Reserved.</p>
         <div className="flex gap-4 mt-2 md:mt-0">
-          <a href="#" className="hover:text-slate-800 dark:hover:text-slate-200 transition-colors">Emergency Protocol</a>
-          <a href="/doc/DRM DOC FULL.md" target="_blank" className="hover:text-slate-800 dark:hover:text-slate-200 transition-colors">Documentation</a>
+          <a href="/my-reports" className="hover:text-slate-800 dark:hover:text-slate-200 transition-colors">Reports</a>
           <a href="#" className="hover:text-slate-800 dark:hover:text-slate-200 transition-colors">Privacy</a>
+          <a href="#" className="hover:text-slate-800 dark:hover:text-slate-200 transition-colors">Terms</a>
         </div>
       </div>
     </footer>
