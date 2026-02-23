@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Layers, LocateFixed } from 'lucide-react';
+import { 
+  Layers, 
+  LocateFixed, 
+  Flame, 
+  Waves, 
+  Stethoscope, 
+  Car, 
+  Mountain, 
+  Globe, 
+  ShieldAlert 
+} from 'lucide-react';
 
 interface MapControlsProps {
   onRecenter: () => void;
@@ -7,6 +17,17 @@ interface MapControlsProps {
   activeCategory: string | null;
   onFilterChange: (category: string | null) => void;
 }
+
+const getCategoryIcon = (category: string) => {
+  switch (category) {
+    case 'fire': return <Flame className="w-4 h-4 text-orange-500" />;
+    case 'flood': return <Waves className="w-4 h-4 text-blue-400" />;
+    case 'medical': return <Stethoscope className="w-4 h-4 text-emerald-400" />;
+    case 'accident': return <Car className="w-4 h-4 text-rose-400" />;
+    case 'earthquake': return <Mountain className="w-4 h-4 text-amber-600" />;
+    default: return <ShieldAlert className="w-4 h-4 text-slate-400" />;
+  }
+};
 
 export default function MapControls({ onRecenter, categories, activeCategory, onFilterChange }: MapControlsProps) {
   const [expanded, setExpanded] = useState(false);
@@ -22,7 +43,7 @@ export default function MapControls({ onRecenter, categories, activeCategory, on
               onClick={() => { onFilterChange(null); setExpanded(false); }}
               className={`px-4 py-3 text-sm font-medium border-b border-slate-800 last:border-0 transition-colors flex items-center gap-3 ${activeCategory === null ? 'bg-blue-600/20 text-blue-400' : 'text-slate-300 hover:bg-slate-800'}`}
             >
-              <span>🌐</span> <span>All Groups</span>
+              <Globe className="w-4 h-4" /> <span>All Groups</span>
             </button>
             {categories.map((cat) => (
               <button
@@ -30,7 +51,7 @@ export default function MapControls({ onRecenter, categories, activeCategory, on
                 onClick={() => { onFilterChange(cat); setExpanded(false); }}
                 className={`px-4 py-3 text-sm font-medium border-b border-slate-800 last:border-0 transition-colors capitalize flex items-center gap-3 ${activeCategory === cat ? 'bg-blue-600/20 text-blue-400' : 'text-slate-300 hover:bg-slate-800'}`}
               >
-                <span>{cat === 'fire' ? '🔥' : cat === 'flood' ? '🌊' : cat === 'medical' ? '🚑' : cat === 'accident' ? '💥' : cat === 'earthquake' ? '📍' : '⚠️'}</span>
+                {getCategoryIcon(cat)}
                 <span>{cat}</span>
               </button>
             ))}
