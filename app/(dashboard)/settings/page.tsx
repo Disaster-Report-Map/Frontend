@@ -10,7 +10,7 @@ export default function SettingsPage() {
     const { logout } = useAuth()
 
     return (
-        <div className="max-w-2xl mx-auto space-y-6 pb-12">
+        <div className="w-full max-w-2xl mx-auto px-4 py-6 space-y-6 pb-12 flex-1">
             <div className="flex items-center justify-between mb-4">
                 <div className="flex flex-col space-y-1">
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 italic">Settings</h2>

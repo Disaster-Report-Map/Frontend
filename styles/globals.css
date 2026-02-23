@@ -2,11 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
 /* Minimal global styles for dark mode */
 :root {
   color-scheme: light dark;
+}
+
+/* Hard suppression of Sonner default icons */
+[data-sonner-toast] [data-icon] {
+  display: none !important;
+}
+
+/* Ensure the toast group itself doesn't have accidental background artifacts */
+[data-sonner-toast] {
+  background: transparent !important;
+  border: none !important;
+}
+
+@keyframes autoCollapseDescription {
+  0%, 5% { /* Start: Title only */
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+  }
+  15%, 45% { /* Animate in and show both for ~2s */
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 4px;
+    padding-bottom: 16px;
+  }
+  60%, 100% { /* Hide description again */
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.toast-desc-animate {
+  animation: autoCollapseDescription 6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+[data-sonner-toast]:hover .toast-desc-animate {
+  animation: none !important;
+  max-height: 200px !important;
+  opacity: 1 !important;
+  margin-top: 4px !important;
+  padding-bottom: 16px !important;
+}
+
+/* Smooth transition for the container height */
+[data-sonner-toast] > div {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+/* Success and Error Title Colors */
+[data-sonner-toast][data-type="success"] [data-title] {
+  color: #22c55e !important;
+}
+
+[data-sonner-toast][data-type="error"] [data-title] {
+  color: #ef4444 !important;
 }

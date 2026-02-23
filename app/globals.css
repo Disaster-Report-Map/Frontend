@@ -1,0 +1,22 @@
+
+/* Leaflet Cluster Overrides */
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+  background-color: transparent !important;
+}
+.marker-cluster div {
+  background-color: transparent !important;
+}
+
+/* Custom dashboard popups */
+.custom-dashboard-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.custom-dashboard-popup .leaflet-popup-content {
+  margin: 12px;
+}
+.custom-dashboard-popup .leaflet-popup-tip-container {
+  display: none;
+}
