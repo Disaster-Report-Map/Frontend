@@ -55,3 +55,12 @@ body,
 [data-sonner-toast] > div {
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) !important;
 }
+
+/* Success and Error Title Colors */
+[data-sonner-toast][data-type="success"] [data-title] {
+  color: #22c55e !important;
+}
+
+[data-sonner-toast][data-type="error"] [data-title] {
+  color: #ef4444 !important;
+}
