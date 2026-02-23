@@ -282,6 +282,16 @@ export default function DisasterMap({
     });
   }, [dynamicRadars]);
 
+  // Effect to handle forced map panning (Search & Re-center)
+  useEffect(() => {
+    if (!mapInstanceRef.current || !forcedCenter) return;
+    // Map smoothly flies to the new coordinates
+    mapInstanceRef.current.flyTo([forcedCenter.lat, forcedCenter.lng], Math.max(mapInstanceRef.current.getZoom(), 14), {
+      animate: true,
+      duration: 1.5
+    });
+  }, [forcedCenter]);
+
   // Effect to handle Draft Report pulsing radar
   useEffect(() => {
     if (!mapInstanceRef.current || !draftReportLocation) {

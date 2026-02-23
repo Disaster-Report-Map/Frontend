@@ -34,10 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           theme="dark" 
           toastOptions={{
             classNames: {
-              toast: 'bg-black border border-green-900/50 rounded-2xl shadow-2xl px-5 py-4 flex items-center gap-3',
-              title: 'text-green-500 font-semibold text-[15px]',
-              description: 'text-white text-sm mt-0.5',
-              icon: 'text-green-500 bg-green-950/50 p-1 rounded-full'
+              toast: 'group bg-[#0a0a0a] border border-[#1a1a1a] rounded-[24px] shadow-2xl px-5 py-3.5 flex items-start gap-3 transition-all duration-300 cursor-default hover:bg-[#111]',
+              title: 'text-[#22c55e] font-medium text-[15px]',
+              description: 'text-white text-[14px] max-h-0 opacity-0 overflow-hidden transition-all duration-300 group-hover:max-h-20 group-hover:opacity-100 group-hover:mt-2',
+              icon: 'text-[#22c55e] bg-[#052e16] p-1.5 rounded-full mt-0.5'
             }
           }} 
         />
