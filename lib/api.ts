@@ -40,7 +40,13 @@ api.interceptors.response.use(
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
         localStorage.removeItem('user')
-        if (typeof window !== 'undefined') window.location.href = '/login'
+        
+        // Only redirect if NOT on an auth page, to prevent reload loops on login failure
+        const isAuthRoute = originalRequest.url?.includes('/api/auth/login/') || originalRequest.url?.includes('/api/auth/register/')
+        
+        if (typeof window !== 'undefined' && !isAuthRoute) {
+          window.location.href = '/login'
+        }
         return Promise.reject(err)
       }
     }

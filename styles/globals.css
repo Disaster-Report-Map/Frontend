@@ -23,3 +23,35 @@ body,
   background: transparent !important;
   border: none !important;
 }
+
+@keyframes autoCollapseDescription {
+  0%, 40% { /* Stay visible for ~2s */
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 4px;
+    padding-bottom: 16px;
+  }
+  60%, 100% { /* Collapse and stay hidden */
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.toast-desc-animate {
+  animation: autoCollapseDescription 5s ease-in-out forwards;
+}
+
+[data-sonner-toast]:hover .toast-desc-animate {
+  animation: none !important;
+  max-height: 200px !important;
+  opacity: 1 !important;
+  margin-top: 4px !important;
+  padding-bottom: 16px !important;
+}
+
+/* Smooth transition for the container height */
+[data-sonner-toast] > div {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
