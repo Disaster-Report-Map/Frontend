@@ -134,7 +134,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Search Input for Geocoding Locations */}
-      <MapSearch onLocationSelect={(lat, lng) => setForcedCenter({ lat, lng })} />
+      <MapSearch onLocationSelect={(lat, lng) => setForcedCenter({ lat, lng, t: Date.now() } as any)} />
 
       {/* Interactive Bottom Right Controls */}
       <MapControls 
