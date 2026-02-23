@@ -58,6 +58,13 @@ export const authApi = {
   googleAuth: (data: any) => api.post('/api/auth/google-auth/', data)
 }
 
+export const userApi = {
+  getProfile: () => api.get('/api/users/me/'),
+  updateProfile: (data: any) => api.patch('/api/users/me/', data),
+  changePassword: (data: any) => api.put('/api/users/me/password/', data),
+  deleteAccount: () => api.delete('/api/users/me/'),
+}
+
 export const incidentsApi = {
   list: () => api.get('/api/incidents/'),
   create: (payload: any) => api.post('/api/incidents/', payload),
