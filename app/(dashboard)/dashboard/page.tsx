@@ -25,6 +25,16 @@ export default function DashboardPage() {
   const [reportForm, setReportForm] = useState({ title: '', category: 'other' })
   const [dynamicMarkers, setDynamicMarkers] = useState<any[]>([])
 
+  // Load from local storage initially
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('drm_local_reports')
+      if (saved) setDynamicMarkers(JSON.parse(saved))
+    } catch (e) {
+      console.warn('Failed to parse local reports', e)
+    }
+  }, [])
+
   useEffect(() => {
     // We still call this so when backend is ready, data starts fetching
     fetchIncidents()
@@ -75,18 +85,25 @@ export default function DashboardPage() {
     e.preventDefault()
     if (!draftLocation || !reportForm.title) return
 
-    setDynamicMarkers((prev) => [
-      ...prev,
-      { 
-        lat: draftLocation.lat, 
-        lng: draftLocation.lng, 
-        title: reportForm.title, 
-        category: reportForm.category, 
-        status: "active" 
-      }
-    ])
+    const newReport = { 
+      lat: draftLocation.lat, 
+      lng: draftLocation.lng, 
+      title: reportForm.title, 
+      category: reportForm.category, 
+      status: "active" 
+    };
 
-    toast.success("Disaster reported successfully!");
+    setDynamicMarkers((prev) => {
+      const updated = [...prev, newReport];
+      try {
+        localStorage.setItem('drm_local_reports', JSON.stringify(updated));
+      } catch (e) { console.warn('Local storage write fail', e) }
+      return updated;
+    });
+
+    toast.success(`Uploaded ${reportForm.category.toUpperCase()} Report ${reportForm.title}`, {
+      description: "Added to your library."
+    });
 
     // Reset draft and form
     setDraftLocation(null)
@@ -103,6 +120,7 @@ export default function DashboardPage() {
           onMapClick={(lat, lng) => setDraftLocation({ lat, lng })}
           draftReportLocation={draftLocation}
           userLocation={userPos} // Explicit new beacon
+          dynamicRadars={dynamicMarkers} // Provide the 2m warning radars around reports
           // The radar dynamically acts as a "Disaster Coverage Zone" for the closest active Flood incident in this demo
           radarCenter={userPos ? { lat: userPos.lat + 0.005, lng: userPos.lng - 0.005 } : { lat: 40.7128, lng: -74.0060 }} 
           radarRadiusMeters={1500} // Defines the 1.5km spread of the disaster zone

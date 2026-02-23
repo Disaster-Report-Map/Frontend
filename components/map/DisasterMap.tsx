@@ -26,6 +26,8 @@ export interface DisasterMapProps {
   draftReportLocation?: { lat: number; lng: number } | null;
   /** Explicitly rendering the user's active GPS coordinate distinct from incidents */
   userLocation?: { lat: number; lng: number } | null;
+  /** Array of dynamically submitted radar zones */
+  dynamicRadars?: { lat: number; lng: number }[];
 }
 
 /**
@@ -55,6 +57,7 @@ export default function DisasterMap({
   const radarLayerRef = useRef<any>(null); // L.Circle
   const draftLayerRef = useRef<any>(null); // L.CircleMarker
   const userMarkerRef = useRef<any>(null); // L.Marker
+  const dynamicRadarsLayerRef = useRef<any>(null); // L.LayerGroup
 
   // Keep a fresh reference to the click callback without re-binding Leaflet events
   const onMapClickRef = useRef(onMapClick);
@@ -246,6 +249,37 @@ export default function DisasterMap({
       }
     });
   }, [radarCenter, radarRadiusMeters]);
+
+  // Effect to handle dynamic radars array
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+    
+    import("leaflet").then((leaflet) => {
+      const L = leaflet.default;
+      const map = mapInstanceRef.current;
+      
+      if (dynamicRadarsLayerRef.current) {
+        map.removeLayer(dynamicRadarsLayerRef.current);
+      }
+      
+      if (!dynamicRadars || dynamicRadars.length === 0) return;
+      
+      const layerGroup = L.layerGroup();
+      dynamicRadars.forEach(radar => {
+        L.circle([radar.lat, radar.lng], {
+          color: '#10b981', // emerald-500
+          fillColor: '#10b981',
+          fillOpacity: 0.15,
+          weight: 1,
+          radius: 2000, // 2km radius
+          className: 'animate-pulse' // native tailwind support in Leaflet
+        }).addTo(layerGroup);
+      });
+      
+      dynamicRadarsLayerRef.current = layerGroup;
+      map.addLayer(layerGroup);
+    });
+  }, [dynamicRadars]);
 
   // Effect to handle Draft Report pulsing radar
   useEffect(() => {
