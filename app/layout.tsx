@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Toaster 
           position="top-center" 
           theme="dark"
-          duration={5000}
+          duration={7000}
           icons={{
             success: <div className="hidden" />,
             error: <div className="hidden" />,
