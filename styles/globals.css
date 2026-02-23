@@ -2,11 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
 /* Minimal global styles for dark mode */
 :root {
   color-scheme: light dark;
+}
+
+/* Hard suppression of Sonner default icons */
+[data-sonner-toast] [data-icon] {
+  display: none !important;
+}
+
+/* Ensure the toast group itself doesn't have accidental background artifacts */
+[data-sonner-toast] {
+  background: transparent !important;
+  border: none !important;
 }

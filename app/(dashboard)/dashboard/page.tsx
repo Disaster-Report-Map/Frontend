@@ -103,7 +103,8 @@ export default function DashboardPage() {
     });
 
     toast.success(`${reportForm.category.toUpperCase()} Report Submitted successfully`, {
-      description: "  Thanks for reporting, you're saving lives! > ${reportForm.title}"
+      description: `Thanks for reporting, you're saving lives! > ${reportForm.title}`,
+      icon: null
     });
 
     // Reset draft and form
