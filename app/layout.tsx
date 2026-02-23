@@ -34,15 +34,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           position="top-center" 
           theme="dark"
           icons={{
-            success: <div className="p-1 px-1.5 bg-green-500/10 rounded-full"><CheckCircle2 className="w-4 h-4 text-[#22c55e]" /></div>
+            success: <div className="p-1 px-1.5 bg-green-500/20 rounded-full"><CheckCircle2 className="w-4 h-4 text-[#22c55e]" /></div>
           }}
           toastOptions={{
             classNames: {
-              toast: 'group bg-black shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] rounded-[32px] px-2 py-2 flex flex-col items-center w-fit min-w-[180px] max-w-sm transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] border-0 hover:rounded-[24px] cursor-default',
-              content: 'flex flex-col items-center w-full px-4 py-2',
-              title: 'text-[#22c55e] font-bold text-[15px] whitespace-nowrap flex items-center gap-2',
-              description: 'text-white/90 text-[14px] text-center overflow-hidden max-h-0 opacity-0 transition-all duration-500 ease-in-out group-hover:max-h-[100px] group-hover:opacity-100 group-hover:mt-3 group-hover:px-2 group-hover:pb-1',
-              icon: 'hidden' // We use the title's icon/gap logic or the icons prop
+              toast: 'group bg-transparent shadow-none border-0 flex justify-center w-full transition-all duration-300 pointer-events-auto',
+              content: 'bg-black/90 backdrop-blur-xl shadow-[0_25px_50px_rgba(0,0,0,0.5)] rounded-[32px] px-3 py-2 flex flex-col items-center w-fit max-w-[400px] transition-all duration-500 ease-in-out border border-white/5 group-hover:rounded-[24px] cursor-default',
+              title: 'text-[#22c55e] font-bold text-[15px] px-4 py-2 flex items-center gap-2.5 whitespace-nowrap',
+              description: 'text-white/90 text-center px-5 max-h-0 opacity-0 overflow-hidden transition-all duration-500 ease-in-out group-hover:max-h-[120px] group-hover:opacity-100 group-hover:pb-4 group-hover:pt-1',
+              icon: 'hidden'
             }
           }} 
         />

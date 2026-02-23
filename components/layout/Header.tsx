@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '../../hooks/useAuth'
 import { usePathname } from 'next/navigation'
-import { Menu, X, MapPinned, FileText, Settings, LogOut } from 'lucide-react'
+import { Menu, X, MapPinned, FileText, Settings, LogOut, LogIn } from 'lucide-react'
 
 export default function Header() {
   const { user, logout } = useAuth()
@@ -115,9 +115,12 @@ export default function Header() {
                 </>
               ) : (
                 <>
-                  <div className="flex flex-col gap-2">
+                  {/* General navigation for unauth users can go here if needed */}
+                  <div className="flex-1" /> 
+                  
+                  <div className="mt-auto pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3">
                     <Link href="/login" onClick={() => setIsMenuOpen(false)} className={mobileLinkStyle('/login')}>
-                      <LogOut className="rotate-180 w-5 h-5" /> Sign In
+                      <LogIn className="w-5 h-5" /> Sign In
                     </Link>
                     <Link href="/register" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 w-full px-4 py-3 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm">
                       Get Started

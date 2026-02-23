@@ -5,6 +5,7 @@ import { useIncidents } from '../../../hooks/useIncidents'
 import MapSearch from '../../../components/map/MapSearch'
 import MapControls from '../../../components/map/MapControls'
 import { toast } from 'sonner'
+import { Flame, Waves, Mountain, Car, Stethoscope, ShieldAlert } from 'lucide-react'
 
 // Dynamically import the DisasterMap component to aggressively avoid SSR issues with Leaflet
 const DisasterMap = dynamic(() => import('../../../components/map/DisasterMap'), {
@@ -184,19 +185,31 @@ export default function DashboardPage() {
 
           <form onSubmit={handleReportSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Disaster Type</label>
-              <select 
-                value={reportForm.category}
-                onChange={(e) => setReportForm({ ...reportForm, category: e.target.value })}
-                className="w-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="fire">🔥 Fire</option>
-                <option value="flood">🌊 Flood</option>
-                <option value="earthquake">⛰️ Earthquake</option>
-                <option value="accident">💥 Traffic Accident</option>
-                <option value="medical">🚑 Medical Emergency</option>
-                <option value="other">⚠️ Other</option>
-              </select>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Disaster Type</label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { id: 'fire', icon: <Flame className="w-4 h-4" />, label: 'Fire' },
+                  { id: 'flood', icon: <Waves className="w-4 h-4" />, label: 'Flood' },
+                  { id: 'earthquake', icon: <Mountain className="w-4 h-4" />, label: 'Quake' },
+                  { id: 'accident', icon: <Car className="w-4 h-4" />, label: 'Crash' },
+                  { id: 'medical', icon: <Stethoscope className="w-4 h-4" />, label: 'Medical' },
+                  { id: 'other', icon: <ShieldAlert className="w-4 h-4" />, label: 'Other' },
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setReportForm({ ...reportForm, category: item.id })}
+                    className={`flex flex-col items-center justify-center p-2 rounded-lg border transition-all ${
+                      reportForm.category === item.id 
+                        ? 'bg-blue-600/10 border-blue-500 text-blue-500 shadow-sm' 
+                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600'
+                    }`}
+                  >
+                    {item.icon}
+                    <span className="text-[10px] font-semibold mt-1 uppercase tracking-wider">{item.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div>
