@@ -21,7 +21,6 @@ export default function LoginForm() {
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [serverError, setServerError] = useState<string | null>(null)
   
   const { register, handleSubmit, formState: { errors } } = useForm<Form>({ 
     resolver: zodResolver(schema) 
@@ -29,7 +28,6 @@ export default function LoginForm() {
 
   const onSubmit = async (data: Form) => {
     setLoading(true)
-    setServerError(null)
     try {
       await login(data)
       toast.success("Welcome back!")
@@ -37,7 +35,6 @@ export default function LoginForm() {
     } catch (err: any) {
       console.error('Login failed', err)
       const msg = err.response?.data?.error || err.response?.data?.detail || "Login failed. Please check your credentials."
-      setServerError(msg)
       toast.error(msg)
     } finally {
       setLoading(false)
@@ -47,12 +44,6 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       
-      {serverError && (
-        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm text-center">
-          {serverError}
-        </div>
-      )}
-
       {/* Email Field */}
       <div className="space-y-1">
         <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Email Address</label>

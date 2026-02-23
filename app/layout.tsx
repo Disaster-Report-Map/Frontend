@@ -33,9 +33,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Toaster 
           position="top-center" 
           theme="dark"
-          icons={{
-            success: <div className="p-1 px-1.5 bg-green-500/20 rounded-full shrink-0"><CheckCircle2 className="w-4 h-4 text-[#22c55e]" /></div>
-          }}
           toastOptions={{
             classNames: {
               toast: 'group bg-transparent shadow-none border-0 flex justify-center !w-full pointer-events-auto',
