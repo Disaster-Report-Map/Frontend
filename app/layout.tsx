@@ -29,7 +29,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         
         <Footer />
-        <Toaster position="bottom-center" richColors closeButton />
+        <Toaster 
+          position="top-center" 
+          theme="dark" 
+          toastOptions={{
+            classNames: {
+              toast: 'bg-black border border-green-900/50 rounded-2xl shadow-2xl px-5 py-4 flex items-center gap-3',
+              title: 'text-green-500 font-semibold text-[15px]',
+              description: 'text-white text-sm mt-0.5',
+              icon: 'text-green-500 bg-green-950/50 p-1 rounded-full'
+            }
+          }} 
+        />
       </body>
     </html>
   )
