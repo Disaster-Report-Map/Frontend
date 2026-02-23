@@ -115,12 +115,14 @@ export default function Header() {
                 </>
               ) : (
                 <>
-                  <Link href="/login" onClick={() => setIsMenuOpen(false)} className={mobileLinkStyle('/login')}>
-                    Sign In
-                  </Link>
-                  <Link href="/register" onClick={() => setIsMenuOpen(false)} className="mt-auto flex justify-center w-full px-4 py-3 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm">
-                    Get Started
-                  </Link>
+                  <div className="flex flex-col gap-2">
+                    <Link href="/login" onClick={() => setIsMenuOpen(false)} className={mobileLinkStyle('/login')}>
+                      <LogOut className="rotate-180 w-5 h-5" /> Sign In
+                    </Link>
+                    <Link href="/register" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 w-full px-4 py-3 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm">
+                      Get Started
+                    </Link>
+                  </div>
                 </>
               )}
             </nav>
