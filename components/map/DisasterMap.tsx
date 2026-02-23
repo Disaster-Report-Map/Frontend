@@ -50,6 +50,7 @@ export default function DisasterMap({
   onMapClick,
   draftReportLocation = null,
   userLocation = null,
+  dynamicRadars = [],
 }: DisasterMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null); // L.Map
