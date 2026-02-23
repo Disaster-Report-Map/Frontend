@@ -169,16 +169,23 @@ export default function DashboardPage() {
 
       {/* Click-to-Report Floating Modal */}
       {draftLocation && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl z-[1000] p-6 animate-in fade-in zoom-in duration-200">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Report Incident</h2>
-            <button 
-              onClick={() => setDraftLocation(null)}
-              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"
-            >
-              ✕
-            </button>
-          </div>
+        <>
+          {/* Backdrop for outside clicks */}
+          <div 
+            className="fixed inset-0 z-[999] bg-slate-900/20 backdrop-blur-[2px] animate-in fade-in duration-300" 
+            onClick={() => setDraftLocation(null)}
+          />
+          
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl z-[1000] p-6 animate-in fade-in zoom-in duration-200">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Report Incident</h2>
+              <button 
+                onClick={() => setDraftLocation(null)}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
           <p className="text-xs text-slate-500 mb-5">
             Location locked at: {draftLocation.lat.toFixed(4)}, {draftLocation.lng.toFixed(4)}
           </p>
@@ -241,7 +248,8 @@ export default function DashboardPage() {
             </div>
           </form>
         </div>
-      )}
-    </div>
+      </>
+    )}
+  </div>
   )
 }
