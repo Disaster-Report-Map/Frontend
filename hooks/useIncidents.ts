@@ -10,10 +10,11 @@ export function useIncidents() {
 
   const fetchIncidents = useCallback(async () => {
     try {
-      const res = await incidentsApi.list()
-      setIncidents(res.data || [])
+      // Temporarily disabled to prevent 404
+      // const res = await incidentsApi.list()
+      // setIncidents(res.data || [])
     } catch (e) { console.error(e) }
-  }, [setIncidents])
+  }, [])
 
   const addIncident = useCallback(async (payload: any) => {
     const res = await incidentsApi.create(payload)
