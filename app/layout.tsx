@@ -34,14 +34,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           position="top-center" 
           theme="dark"
           icons={{
-            success: <div className="p-1 px-1.5 bg-green-500/20 rounded-full"><CheckCircle2 className="w-4 h-4 text-[#22c55e]" /></div>
+            success: <div className="p-1 px-1.5 bg-green-500/20 rounded-full shrink-0"><CheckCircle2 className="w-4 h-4 text-[#22c55e]" /></div>
           }}
           toastOptions={{
             classNames: {
-              toast: 'group bg-transparent shadow-none border-0 flex justify-center w-full transition-all duration-300 pointer-events-auto',
-              content: 'bg-black/90 backdrop-blur-xl shadow-[0_25px_50px_rgba(0,0,0,0.5)] rounded-[32px] px-3 py-2 flex flex-col items-center w-fit max-w-[400px] transition-all duration-500 ease-in-out border border-white/5 group-hover:rounded-[24px] cursor-default',
-              title: 'text-[#22c55e] font-bold text-[15px] px-4 py-2 flex items-center gap-2.5 whitespace-nowrap',
-              description: 'text-white/90 text-center px-5 max-h-0 opacity-0 overflow-hidden transition-all duration-500 ease-in-out group-hover:max-h-[120px] group-hover:opacity-100 group-hover:pb-4 group-hover:pt-1',
+              toast: 'group bg-transparent shadow-none border-0 flex justify-center !w-full pointer-events-auto',
+              content: 'bg-black/85 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] rounded-[40px] px-2 py-1.5 flex flex-col items-center w-[calc(100vw-32px)] sm:w-fit sm:max-w-[450px] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] border border-white/10 group-hover:rounded-[24px] cursor-default',
+              title: 'text-[#22c55e] font-bold text-[14px] sm:text-[15px] px-4 py-2 flex items-center gap-2.5 whitespace-nowrap overflow-hidden',
+              description: 'text-white/80 text-sm text-center px-6 max-h-0 opacity-0 overflow-hidden transition-all duration-500 ease-in-out group-hover:max-h-[150px] group-hover:opacity-100 group-hover:pb-4 group-hover:pt-1 leading-relaxed',
               icon: 'hidden'
             }
           }} 
