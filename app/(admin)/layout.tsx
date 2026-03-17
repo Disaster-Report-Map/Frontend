@@ -1,26 +1,28 @@
+"use client";
+
 import React from "react";
-import Link from "next/link";
+import AdminSidebar from "./_components/AdminSidebar";
+import AdminNavbar from "./_components/AdminNavbar";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isSidebarOpen, setSidebarOpen] = React.useState(false);
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="w-full bg-white border-b dark:bg-gray-800">
-        <div className="flex items-center justify-between max-w-6xl px-4 py-3 mx-auto">
-          <Link href="/" className="font-bold">
-            DRM Admin
-          </Link>
-          <nav className="flex gap-3">
-            <Link href="/admin" className="px-3 py-1 rounded">
-              Overview
-            </Link>
-          </nav>
+    <div className="min-h-screen bg-slate-50">
+      <div className="flex min-h-screen">
+        <AdminSidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+        <div className="flex min-w-0 flex-1 flex-col">
+          <AdminNavbar onMenuClick={() => setSidebarOpen(true)} />
+          <main className="flex-1 p-4 sm:p-6">
+            <div className="mx-auto w-full max-w-7xl">{children}</div>
+          </main>
         </div>
-      </header>
-      <main className="max-w-6xl px-4 py-6 mx-auto">{children}</main>
+      </div>
     </div>
   );
 }
