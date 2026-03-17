@@ -13,6 +13,21 @@ body,
   color-scheme: light dark;
 }
 
+/* Admin form inputs dark mode support */
+@layer components {
+  .admin-input {
+    @apply rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-600;
+  }
+
+  .admin-select {
+    @apply rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-slate-600;
+  }
+
+  .admin-textarea {
+    @apply rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-600;
+  }
+}
+
 /* Hard suppression of Sonner default icons */
 [data-sonner-toast] [data-icon] {
   display: none !important;
@@ -25,19 +40,28 @@ body,
 }
 
 @keyframes autoCollapseDescription {
-  0%, 5% { /* Start: Title only */
+
+  0%,
+  5% {
+    /* Start: Title only */
     max-height: 0;
     opacity: 0;
     margin-top: 0;
     padding-bottom: 0;
   }
-  15%, 45% { /* Animate in and show both for ~2s */
+
+  15%,
+  45% {
+    /* Animate in and show both for ~2s */
     max-height: 200px;
     opacity: 1;
     margin-top: 4px;
     padding-bottom: 16px;
   }
-  60%, 100% { /* Hide description again */
+
+  60%,
+  100% {
+    /* Hide description again */
     max-height: 0;
     opacity: 0;
     margin-top: 0;
@@ -58,7 +82,7 @@ body,
 }
 
 /* Smooth transition for the container height */
-[data-sonner-toast] > div {
+[data-sonner-toast]>div {
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) !important;
 }
 
