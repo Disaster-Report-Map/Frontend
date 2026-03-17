@@ -10,7 +10,7 @@ export default function AnalyticsPage() {
 
       <section className="grid gap-4 lg:grid-cols-2">
         <Card title="Incident Categories" subtitle="Bar chart placeholder">
-          <div className="flex h-52 items-end gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <div className="flex h-52 items-end gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800">
             {[42, 65, 28, 54, 36, 71].map((height, index) => (
               <div
                 key={index}
@@ -22,14 +22,14 @@ export default function AnalyticsPage() {
         </Card>
 
         <Card title="Trend Graph" subtitle="Timeline placeholder">
-          <div className="h-52 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <div className="relative h-full w-full overflow-hidden rounded-lg border border-slate-200 bg-white">
+          <div className="h-52 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800">
+            <div className="relative h-full w-full overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
               <svg viewBox="0 0 400 160" className="h-full w-full">
                 <polyline
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="3"
-                  className="text-slate-900"
+                  className="text-slate-900 dark:text-slate-300"
                   points="0,120 40,110 80,116 120,90 160,95 200,72 240,84 280,60 320,66 360,44 400,52"
                 />
               </svg>
@@ -43,7 +43,7 @@ export default function AnalyticsPage() {
           {Array.from({ length: 48 }).map((_, i) => (
             <div
               key={i}
-              className={`h-8 rounded-md ${i % 5 === 0 ? "bg-rose-200" : i % 3 === 0 ? "bg-amber-200" : "bg-emerald-200"}`}
+              className={`h-8 rounded-md ${i % 5 === 0 ? "bg-rose-200 dark:bg-rose-900" : i % 3 === 0 ? "bg-amber-200 dark:bg-amber-900" : "bg-emerald-200 dark:bg-emerald-900"}`}
             />
           ))}
         </div>

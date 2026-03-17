@@ -10,15 +10,9 @@ export default function DataExportPage() {
 
       <Card title="Export Filters">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <input
-            type="date"
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400"
-          />
-          <input
-            type="date"
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400"
-          />
-          <select className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400">
+          <input type="date" className="admin-input" />
+          <input type="date" className="admin-input" />
+          <select className="admin-select">
             <option>All Categories</option>
             <option>Fire</option>
             <option>Flood</option>
@@ -31,13 +25,13 @@ export default function DataExportPage() {
         <div className="flex flex-wrap gap-3">
           <button
             type="button"
-            className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+            className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
           >
             Export CSV
           </button>
           <button
             type="button"
-            className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800"
+            className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600"
           >
             Export JSON
           </button>

@@ -74,13 +74,13 @@ export default function AdminPage() {
       </section>
 
       <Card title="Live Incident Map" subtitle="Geospatial monitor placeholder">
-        <div className="relative h-72 overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-200 sm:h-80">
+        <div className="relative h-72 overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-200 dark:border-slate-800 dark:from-slate-800 dark:to-slate-900 sm:h-80">
           <div className="absolute inset-0 grid grid-cols-6 grid-rows-4 gap-px opacity-50">
             {Array.from({ length: 24 }).map((_, i) => (
-              <div key={i} className="bg-white/50" />
+              <div key={i} className="bg-white/50 dark:bg-slate-700/50" />
             ))}
           </div>
-          <div className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-xs font-semibold text-rose-700 shadow-sm">
+          <div className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-xs font-semibold text-rose-700 shadow-sm dark:border-rose-900 dark:bg-rose-950 dark:text-rose-300">
             LIVE
           </div>
         </div>

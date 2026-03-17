@@ -43,30 +43,24 @@ export default function IncidentReportsPage() {
 
       <Card title="Filters">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          <select className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400">
+          <select className="admin-select">
             <option>All Categories</option>
             <option>Fire</option>
             <option>Flood</option>
             <option>Storm</option>
           </select>
-          <select className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400">
+          <select className="admin-select">
             <option>All Status</option>
             <option>Active</option>
             <option>Pending</option>
             <option>Resolved</option>
           </select>
-          <input
-            type="date"
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400"
-          />
-          <input
-            type="date"
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400"
-          />
+          <input type="date" className="admin-input" />
+          <input type="date" className="admin-input" />
           <input
             type="search"
             placeholder="Search reports..."
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-slate-400"
+            className="admin-input"
           />
         </div>
       </Card>

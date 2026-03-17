@@ -12,39 +12,39 @@ export default function NotificationsPage() {
         <form className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5 md:col-span-2">
-              <label className="text-sm font-medium text-slate-700">
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 Title
               </label>
               <input
-                className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400"
+                className="w-full admin-input"
                 placeholder="Enter notification title"
               />
             </div>
             <div className="space-y-1.5 md:col-span-2">
-              <label className="text-sm font-medium text-slate-700">
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 Message
               </label>
               <textarea
                 rows={4}
-                className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400"
+                className="w-full admin-textarea"
                 placeholder="Enter message details"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700">
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 Target Audience
               </label>
-              <select className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400">
+              <select className="w-full admin-select">
                 <option>All</option>
                 <option>Agencies</option>
                 <option>Users</option>
               </select>
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700">
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 Delivery Method
               </label>
-              <select className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400">
+              <select className="w-full admin-select">
                 <option>Email</option>
                 <option>In-App</option>
               </select>
@@ -52,7 +52,7 @@ export default function NotificationsPage() {
           </div>
           <button
             type="button"
-            className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800"
+            className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600"
           >
             Send Broadcast
           </button>
