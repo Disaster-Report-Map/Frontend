@@ -1,18 +1,18 @@
-import React from 'react'
+import React from "react";
 
 type Column<T> = {
-  key: string
-  title: string
-  className?: string
-  render: (row: T) => React.ReactNode
-}
+  key: string;
+  title: string;
+  className?: string;
+  render: (row: T) => React.ReactNode;
+};
 
 export function AdminTable<T>({
   columns,
   rows,
 }: {
-  columns: Column<T>[]
-  rows: T[]
+  columns: Column<T>[];
+  rows: T[];
 }) {
   return (
     <div className="overflow-x-auto">
@@ -23,7 +23,7 @@ export function AdminTable<T>({
               <th
                 key={column.key}
                 scope="col"
-                className={`px-3 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 ${column.className || ''}`}
+                className={`px-3 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 ${column.className || ""}`}
               >
                 {column.title}
               </th>
@@ -32,9 +32,15 @@ export function AdminTable<T>({
         </thead>
         <tbody className="divide-y divide-slate-100">
           {rows.map((row, index) => (
-            <tr key={index} className="transition-colors duration-200 hover:bg-slate-50">
+            <tr
+              key={index}
+              className="transition-colors duration-200 hover:bg-slate-50"
+            >
               {columns.map((column) => (
-                <td key={column.key} className="px-3 py-3 text-sm text-slate-700">
+                <td
+                  key={column.key}
+                  className="px-3 py-3 text-sm text-slate-700"
+                >
                   {column.render(row)}
                 </td>
               ))}
@@ -43,5 +49,5 @@ export function AdminTable<T>({
         </tbody>
       </table>
     </div>
-  )
+  );
 }
