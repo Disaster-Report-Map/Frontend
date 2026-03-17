@@ -72,7 +72,8 @@ export default function AdminSidebar({
         {/* Navigation */}
         <nav className="space-y-1">
           {navItems.map(({ label, href, icon: Icon }) => {
-            const isActive = pathname === href || pathname.startsWith(href + "/");
+            const isActive =
+              pathname === href || pathname.startsWith(href + "/");
 
             return (
               <Link

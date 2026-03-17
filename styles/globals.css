@@ -40,19 +40,28 @@ body,
 }
 
 @keyframes autoCollapseDescription {
-  0%, 5% { /* Start: Title only */
+
+  0%,
+  5% {
+    /* Start: Title only */
     max-height: 0;
     opacity: 0;
     margin-top: 0;
     padding-bottom: 0;
   }
-  15%, 45% { /* Animate in and show both for ~2s */
+
+  15%,
+  45% {
+    /* Animate in and show both for ~2s */
     max-height: 200px;
     opacity: 1;
     margin-top: 4px;
     padding-bottom: 16px;
   }
-  60%, 100% { /* Hide description again */
+
+  60%,
+  100% {
+    /* Hide description again */
     max-height: 0;
     opacity: 0;
     margin-top: 0;
@@ -73,7 +82,7 @@ body,
 }
 
 /* Smooth transition for the container height */
-[data-sonner-toast] > div {
+[data-sonner-toast]>div {
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) !important;
 }
 

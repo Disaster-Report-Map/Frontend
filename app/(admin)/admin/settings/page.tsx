@@ -41,13 +41,17 @@ export default function AdminSettingsPage() {
         <Card title="Agency Routing Rules">
           <div className="space-y-3 text-sm text-slate-700 dark:text-slate-300">
             <div className="rounded-lg border border-slate-200 p-3 dark:border-slate-700 dark:bg-slate-800">
-              <p className="font-medium text-slate-900 dark:text-slate-100">Flood category</p>
+              <p className="font-medium text-slate-900 dark:text-slate-100">
+                Flood category
+              </p>
               <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                 Route to Flood Response Team and Water Safety Unit.
               </p>
             </div>
             <div className="rounded-lg border border-slate-200 p-3 dark:border-slate-700 dark:bg-slate-800">
-              <p className="font-medium text-slate-900 dark:text-slate-100">Fire category</p>
+              <p className="font-medium text-slate-900 dark:text-slate-100">
+                Fire category
+              </p>
               <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                 Route to Urban Fire Service and medical backup.
               </p>
