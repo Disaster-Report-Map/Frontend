@@ -1,23 +1,39 @@
-import { Card, PageTitle, StatCard } from '../../_components/AdminCard'
+import { Card, PageTitle, StatCard } from "../../_components/AdminCard";
 
 export default function NotificationsPage() {
   return (
     <div className="space-y-6">
-      <PageTitle title="Notifications" description="Compose and broadcast messages to your target audience." />
+      <PageTitle
+        title="Notifications"
+        description="Compose and broadcast messages to your target audience."
+      />
 
       <Card title="Broadcast Message">
         <form className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5 md:col-span-2">
-              <label className="text-sm font-medium text-slate-700">Title</label>
-              <input className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400" placeholder="Enter notification title" />
+              <label className="text-sm font-medium text-slate-700">
+                Title
+              </label>
+              <input
+                className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400"
+                placeholder="Enter notification title"
+              />
             </div>
             <div className="space-y-1.5 md:col-span-2">
-              <label className="text-sm font-medium text-slate-700">Message</label>
-              <textarea rows={4} className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400" placeholder="Enter message details" />
+              <label className="text-sm font-medium text-slate-700">
+                Message
+              </label>
+              <textarea
+                rows={4}
+                className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400"
+                placeholder="Enter message details"
+              />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700">Target Audience</label>
+              <label className="text-sm font-medium text-slate-700">
+                Target Audience
+              </label>
               <select className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400">
                 <option>All</option>
                 <option>Agencies</option>
@@ -25,14 +41,19 @@ export default function NotificationsPage() {
               </select>
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700">Delivery Method</label>
+              <label className="text-sm font-medium text-slate-700">
+                Delivery Method
+              </label>
               <select className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-slate-400">
                 <option>Email</option>
                 <option>In-App</option>
               </select>
             </div>
           </div>
-          <button type="button" className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800">
+          <button
+            type="button"
+            className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800"
+          >
             Send Broadcast
           </button>
         </form>
@@ -57,5 +78,5 @@ export default function NotificationsPage() {
         <StatCard label="Failed" value="884" />
       </section>
     </div>
-  )
+  );
 }

@@ -1,15 +1,22 @@
-import { Card, PageTitle, StatCard } from '../../_components/AdminCard'
+import { Card, PageTitle, StatCard } from "../../_components/AdminCard";
 
 export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
-      <PageTitle title="Analytics" description="Operational trends, distribution heat, and response performance." />
+      <PageTitle
+        title="Analytics"
+        description="Operational trends, distribution heat, and response performance."
+      />
 
       <section className="grid gap-4 lg:grid-cols-2">
         <Card title="Incident Categories" subtitle="Bar chart placeholder">
           <div className="flex h-52 items-end gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
             {[42, 65, 28, 54, 36, 71].map((height, index) => (
-              <div key={index} className="flex-1 rounded-t-lg bg-slate-900/80" style={{ height: `${height}%` }} />
+              <div
+                key={index}
+                className="flex-1 rounded-t-lg bg-slate-900/80"
+                style={{ height: `${height}%` }}
+              />
             ))}
           </div>
         </Card>
@@ -36,7 +43,7 @@ export default function AnalyticsPage() {
           {Array.from({ length: 48 }).map((_, i) => (
             <div
               key={i}
-              className={`h-8 rounded-md ${i % 5 === 0 ? 'bg-rose-200' : i % 3 === 0 ? 'bg-amber-200' : 'bg-emerald-200'}`}
+              className={`h-8 rounded-md ${i % 5 === 0 ? "bg-rose-200" : i % 3 === 0 ? "bg-amber-200" : "bg-emerald-200"}`}
             />
           ))}
         </div>
@@ -49,5 +56,5 @@ export default function AnalyticsPage() {
         <StatCard label="Resolved in 24h" value="89%" />
       </section>
     </div>
-  )
+  );
 }
