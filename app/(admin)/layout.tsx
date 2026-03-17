@@ -8,8 +8,8 @@ export default function AdminLayout({
 }) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="w-full bg-white dark:bg-gray-800 border-b">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <header className="w-full bg-white border-b dark:bg-gray-800">
+        <div className="flex items-center justify-between max-w-6xl px-4 py-3 mx-auto">
           <Link href="/" className="font-bold">
             DRM Admin
           </Link>
@@ -20,7 +20,7 @@ export default function AdminLayout({
           </nav>
         </div>
       </header>
-      <main className="max-w-6xl mx-auto px-4 py-6">{children}</main>
+      <main className="max-w-6xl px-4 py-6 mx-auto">{children}</main>
     </div>
   );
 }
