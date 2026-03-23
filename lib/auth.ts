@@ -17,7 +17,21 @@ export async function loginRequest(payload: { email: string; password: string })
   
   localStorage.setItem('access_token', access)
   localStorage.setItem('refresh_token', refresh)
-  if (user) localStorage.setItem('user', JSON.stringify(user))
+  
+  if (user) {
+    localStorage.setItem('user', JSON.stringify(user))
+  } else {
+    // If backend doesn't return user, fetch it immediately using the new token
+    try {
+      const { userApi } = await import('./api')
+      const profile = await userApi.getProfile()
+      if (profile.data) {
+        localStorage.setItem('user', JSON.stringify(profile.data))
+      }
+    } catch (e) {
+      console.warn('Profile fetch failed after login', e)
+    }
+  }
   
   return res.data
 }
@@ -28,7 +42,21 @@ export async function registerRequest(payload: any) {
   
   localStorage.setItem('access_token', access)
   localStorage.setItem('refresh_token', refresh)
-  if (user) localStorage.setItem('user', JSON.stringify(user))
+  
+  if (user) {
+    localStorage.setItem('user', JSON.stringify(user))
+  } else {
+    // Just in case register doesn't return user
+    try {
+      const { userApi } = await import('./api')
+      const profile = await userApi.getProfile()
+      if (profile.data) {
+        localStorage.setItem('user', JSON.stringify(profile.data))
+      }
+    } catch (e) {
+      console.warn('Profile fetch failed after registration', e)
+    }
+  }
   
   return res.data
 }

@@ -10,7 +10,11 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token')
+    // Skip token for auth endpoints to avoid issues with expired tokens on login/reg
+    const isAuthRoute = config.url?.includes('/api/auth/login/') || config.url?.includes('/api/auth/register/')
+    if (isAuthRoute) return config
+
+    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -24,7 +28,11 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    
+    // Explicitly do not attempt refresh for login/register endpoints that fail with 401
+    const isAuthRoute = originalRequest.url?.includes('/api/auth/login/') || originalRequest.url?.includes('/api/auth/register/')
+    
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthRoute) {
       originalRequest._retry = true
       try {
         const refresh = localStorage.getItem('refresh_token')
@@ -41,10 +49,7 @@ api.interceptors.response.use(
         localStorage.removeItem('refresh_token')
         localStorage.removeItem('user')
         
-        // Only redirect if NOT on an auth page, to prevent reload loops on login failure
-        const isAuthRoute = originalRequest.url?.includes('/api/auth/login/') || originalRequest.url?.includes('/api/auth/register/')
-        
-        if (typeof window !== 'undefined' && !isAuthRoute) {
+        if (typeof window !== 'undefined') {
           window.location.href = '/login'
         }
         return Promise.reject(err)

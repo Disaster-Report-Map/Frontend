@@ -8,17 +8,25 @@ export function useAuth() {
   const setUser = useAuthStore((s) => s.setUser)
   const user = useAuthStore((s) => s.user)
 
+  // Initialize store from localStorage on mount
   React.useEffect(() => {
     (async () => {
-      const u = await fetchCurrentUser()
-      setUser(u)
-      if (u) {
-        initSocket()
-        connectSocket()
+      if (!user) {
+        const u = await fetchCurrentUser()
+        if (u) setUser(u)
       }
     })()
-    return () => { disconnectSocket() }
-  }, [setUser])
+  }, [setUser, user])
+
+  // Sync socket with user state
+  React.useEffect(() => {
+    if (user) {
+      initSocket()
+      connectSocket()
+    } else {
+      disconnectSocket()
+    }
+  }, [user])
 
   async function login(payload: any) {
     await loginRequest(payload)
